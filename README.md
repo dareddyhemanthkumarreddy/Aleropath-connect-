@@ -94,43 +94,71 @@ Because of this fragmentation:
 
 ## 🏗 System Architecture
 
-```mermaid
-flowchart TB
-    subgraph Client ["Client Layer (Tailwind v4 / HTML5 / Aleropath Core)"]
-        UI1["Landing Page & Persona Switcher\n(LandingScreen.html)"]
-        UI2["Profile Builder & Signal Collector\n(ProfileCreation.html)"]
-        UI3["AI Match Explorer & Team Assembler\n(AiMatch.html)"]
-        UI4["Opportunity Feed & Auto-Tagging\n(OpportunityFeed.html)"]
-        UI5["Builder & Organizer Command Portal\n(Dashboard.html)"]
-        CORE["Shared Engine & Workspaces\n(aleropath-core.js)"]
-        STORE[("Local Storage & Workspaces\n• Profiles • Matches • Chat")]
-    end
-
-    subgraph Server ["Backend & Production Build (Express + TypeScript + Vite)"]
-        ROUTER["Express Engine & Router\n(server.ts)"]
-        SEED[("Static Seed Graph\nseed_dataset_india_premium.json")]
-        HEALTH["Health Monitor\n/api/health"]
-    end
-
-    subgraph Cloud ["Cloud Intelligence & Deployment"]
-        GEMINI["Google Gemini 3.7 / Flash API\n(@google/genai)"]
-        NETLIFY["Netlify Free Tier Deployment\n(netlify.toml)"]
-    end
-
-    UI1 --> CORE
-    UI2 --> CORE
-    UI3 --> CORE
-    UI4 --> CORE
-    UI5 --> CORE
-    CORE <--> STORE
-    CORE <--> ROUTER
-    ROUTER <--> GEMINI
-    ROUTER <--> SEED
-    Client --> NETLIFY
-```
-
 ---
+config:
+  layout: elk
+  theme: mc
+---
+graph TB
+    subgraph ClientLayer["Client Layer"]
+        LandingScreen["Landing Screen"]
+        ProfileCreation["Profile Creation"]
+        AiMatch["AI Match"]
+        OpportunityFeed["Opportunity Feed"]
+        Dashboard["Dashboard"]
+    end
 
+    subgraph SharedCore["Shared Core Client Engine"]
+        CoreJS["aleropath-core.js"]
+        KarmaIndex["Karma Index"]
+        TeamWorkspace["Team Workspace"]
+        Assembler["Assembler"]
+        CoreJS --> KarmaIndex
+        CoreJS --> TeamWorkspace
+        CoreJS --> Assembler
+    end
+
+    subgraph FullStackServer["Full-Stack Express Server"]
+        ServerTS["server.ts"]
+        GeminiTag["/api/gemini/tag-opportunity"]
+        GeminiExplain["/api/gemini/explain-match"]
+        SeedData["/api/seed-data"]
+        ServerTS --> GeminiTag
+        ServerTS --> GeminiExplain
+        ServerTS --> SeedData
+    end
+
+    subgraph ExternalCloud["External Cloud & Edge Layer"]
+        GeminiAPI["Google Gemini 3.7 Flash AI API"]
+        NetlifyDeploy["Netlify Deployment"]
+    end
+
+    LandingScreen --> CoreJS
+    ProfileCreation --> CoreJS
+    AiMatch --> CoreJS
+    OpportunityFeed --> CoreJS
+    Dashboard --> CoreJS
+
+    CoreJS --> ServerTS
+    GeminiTag --> GeminiAPI
+    GeminiExplain --> GeminiAPI
+    SeedData --> GeminiAPI
+
+    ServerTS --> NetlifyDeploy
+    ClientLayer --> NetlifyDeploy
+
+    classDef client stroke:#3b82f6,fill:#eff6ff
+    classDef core stroke:#8b5cf6,fill:#faf5ff
+    classDef server stroke:#f97316,fill:#fff7ed
+    classDef external stroke:#06b6d4,fill:#ecfeff
+    classDef process stroke:#6366f1,fill:#eef2ff
+
+    class LandingScreen,ProfileCreation,AiMatch,OpportunityFeed,Dashboard client
+    class CoreJS,KarmaIndex,TeamWorkspace,Assembler core
+    class ServerTS,GeminiTag,GeminiExplain,SeedData server
+    class GeminiAPI,NetlifyDeploy external
+---
+---
 ## 🧮 Matching Engine Mathematical Specification
 
 The Aleropath matching engine computes a deterministic compatibility score $S(P, O) \in [0.60, 0.99]$ between a Builder Profile $P$ and an Opportunity/Candidate Record $O$:
