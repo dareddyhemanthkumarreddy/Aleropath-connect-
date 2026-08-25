@@ -1,4 +1,4 @@
-# ⚡ Aleropath Connect — The Community Engine
+<img width="4214" height="8192" alt="Aleropath Connect User" src="https://github.com/user-attachments/assets/9ec7e57c-7025-48c0-bd2e-04df3ded303d" /># ⚡ Aleropath Connect — The Community Engine
 
 <div align="center">
 
@@ -99,43 +99,9 @@ Because of this fragmentation:
 ---
 
 ## 🏗 System Architecture
+<img width="4678" height="4214" alt="Client Layer Opportunity" src="https://github.com/user-attachments/assets/cac9e115-9651-4464-bf0e-9f391ebdc369" />
 
-```mermaid
-flowchart TB
-    subgraph Client ["Client Layer (Tailwind v4 / HTML5 / Aleropath Core)"]
-        UI1["Landing Page & Persona Switcher\n(LandingScreen.html)"]
-        UI2["Profile Builder & Signal Collector\n(ProfileCreation.html)"]
-        UI3["AI Match Explorer & Team Assembler\n(AiMatch.html)"]
-        UI4["Opportunity Feed & Auto-Tagging\n(OpportunityFeed.html)"]
-        UI5["Builder & Organizer Command Portal\n(Dashboard.html)"]
-        CORE["Shared Engine & Workspaces\n(aleropath-core.js)"]
-        STORE[("Local Storage & Workspaces\n• Profiles • Matches • Chat")]
-    end
-
-    subgraph Server ["Backend & Production Build (Express + TypeScript + Vite)"]
-        ROUTER["Express Engine & Router\n(server.ts)"]
-        SEED[("Static Seed Graph\nseed_dataset_india_premium.json")]
-        HEALTH["Health Monitor\n/api/health"]
-    end
-
-    subgraph Cloud ["Cloud Intelligence & Deployment"]
-        GEMINI["Google Gemini 3.7 / Flash API\n(@google/genai)"]
-        NETLIFY["Netlify Free Tier Deployment\n(netlify.toml)"]
-    end
-
-    UI1 --> CORE
-    UI2 --> CORE
-    UI3 --> CORE
-    UI4 --> CORE
-    UI5 --> CORE
-    CORE <--> STORE
-    CORE <--> ROUTER
-    ROUTER <--> GEMINI
-    ROUTER <--> SEED
-    Client --> NETLIFY
-```
-
----
+<img width="4214" height="8192" alt="Aleropath Connect User" src="https://github.com/user-attachments/assets/1c632626-acf6-4259-883f-58369a812504" />
 
 ## 🧮 Matching Engine Mathematical Specification
 
