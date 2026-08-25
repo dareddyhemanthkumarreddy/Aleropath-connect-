@@ -1,0 +1,50 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Redirect rules for client-side navigation
+[[redirects]]
+  from = "/OppurtunityFeed.html"
+  to = "/OpportunityFeed.html"
+  status = 301
+
+[[redirects]]
+  from = "/LandingScreen"
+  to = "/LandingScreen.html"
+  status = 200
+
+[[redirects]]
+  from = "/ProfileCreation"
+  to = "/ProfileCreation.html"
+  status = 200
+
+[[redirects]]
+  from = "/AiMatch"
+  to = "/AiMatch.html"
+  status = 200
+
+[[redirects]]
+  from = "/OpportunityFeed"
+  to = "/OpportunityFeed.html"
+  status = 200
+
+[[redirects]]
+  from = "/Dashboard"
+  to = "/Dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/LandingScreen.html"
+  status = 200
+
+# Security & Cache Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

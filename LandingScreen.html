@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07142f" />
+  <title>Aleropath Connect — Find Your Next Connection</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07142f",
+            navy: "#0b1f3a",
+            electric: "#2f6df6",
+            sky: "#79a8ff",
+            mist: "#f5f8ff",
+            line: "#dce5f4"
+          },
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+          },
+          boxShadow: {
+            glow: "0 20px 70px rgba(47,109,246,.20)",
+            soft: "0 16px 50px rgba(7,20,47,.08)"
+          },
+          animation: {
+            float: "float 7s ease-in-out infinite",
+            pulseSoft: "pulseSoft 3s ease-in-out infinite",
+            shimmer: "shimmer 2.4s linear infinite"
+          },
+          keyframes: {
+            float: {
+              "0%, 100%": { transform: "translateY(0px)" },
+              "50%": { transform: "translateY(-10px)" }
+            },
+            pulseSoft: {
+              "0%, 100%": { opacity: ".45", transform: "scale(1)" },
+              "50%": { opacity: ".8", transform: "scale(1.05)" }
+            },
+            shimmer: {
+              "0%": { backgroundPosition: "-200% 0" },
+              "100%": { backgroundPosition: "200% 0" }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet" />
+
+  <style>
+    :root { color-scheme: light; }
+    body {
+      background:
+        radial-gradient(circle at 78% 10%, rgba(47,109,246,.09), transparent 28rem),
+        radial-gradient(circle at 10% 35%, rgba(121,168,255,.08), transparent 25rem),
+        #f8faff;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(11,31,58,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,31,58,.045) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,.7) 45%, transparent 100%);
+    }
+    .hero-glow {
+      background: radial-gradient(circle, rgba(47,109,246,.20) 0%, rgba(47,109,246,.06) 35%, transparent 72%);
+      filter: blur(10px);
+    }
+    .glass {
+      background: rgba(255,255,255,.76);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .gradient-text {
+      background: linear-gradient(110deg, #07142f 12%, #194cae 52%, #2f6df6 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .shine {
+      background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.32) 45%, transparent 70%);
+      background-size: 220% 100%;
+    }
+    .feature-card { transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 60px rgba(7,20,47,.11);
+      border-color: rgba(47,109,246,.28);
+    }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -8px;
+      height: 2px;
+      border-radius: 999px;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform .25s ease;
+      background: #2f6df6;
+    }
+    .nav-link:hover::after { transform: scaleX(1); }
+  </style>
+</head>
+
+<body class="font-sans text-ink antialiased selection:bg-blue-100 selection:text-navy">
+
+  <!-- Ambient background -->
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="grid-bg absolute inset-0"></div>
+    <div class="hero-glow absolute -right-40 -top-40 h-[38rem] w-[38rem] rounded-full animate-pulseSoft"></div>
+    <div class="absolute left-[7%] top-[30%] h-40 w-40 rounded-full bg-blue-200/20 blur-3xl"></div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+      <a href="LandingScreen.html" class="group flex items-center gap-3" aria-label="Aleropath Connect home">
+        <span class="relative grid h-10 w-10 place-items-center overflow-hidden rounded-2xl bg-navy text-white shadow-lg shadow-blue-900/10">
+          <span class="absolute inset-0 bg-gradient-to-br from-electric to-blue-400 opacity-90"></span>
+          <span class="material-symbols-outlined relative text-[22px]">hub</span>
+        </span>
+        <span>
+          <span class="block text-[15px] font-extrabold tracking-[-0.02em] text-navy">Aleropath</span>
+          <span class="block text-[11px] font-semibold tracking-[0.18em] text-slate-400">CONNECT</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+        <a class="nav-link text-sm font-semibold text-electric" href="LandingScreen.html">Home</a>
+        <a class="nav-link text-sm font-medium text-slate-500 transition hover:text-navy" href="AiMatch.html">Matches</a>
+        <a class="nav-link text-sm font-medium text-slate-500 transition hover:text-navy" href="OpportunityFeed.html">Feed</a>
+        <a class="nav-link text-sm font-medium text-slate-500 transition hover:text-navy" href="Dashboard.html">Dashboard</a>
+      </nav>
+
+      <div class="hidden items-center gap-3 sm:flex" id="navAuthContainer">
+        <button class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-navy" id="navSignInBtn">
+          Sign in
+        </button>
+        <a href="ProfileCreation.html" class="group relative overflow-hidden rounded-xl bg-navy px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-900/15 transition duration-300 hover:-translate-y-0.5 hover:bg-electric hover:shadow-glow" id="navCtaBtn">
+          <span class="relative z-10 flex items-center gap-2">
+            Get started
+            <span class="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+          </span>
+          <span class="shine absolute inset-0 -translate-x-full group-hover:animate-shimmer"></span>
+        </a>
+      </div>
+
+      <div class="hidden items-center gap-3 sm:flex" id="navUserContainer" style="display: none;">
+        <div class="relative" id="userMenuDropdownWrapper">
+          <button id="userProfileBtn" class="flex items-center gap-2.5 rounded-2xl border border-slate-200 bg-white/90 px-3 py-1.5 shadow-sm transition hover:border-blue-300 hover:bg-blue-50/50">
+            <span id="userNavAvatar" class="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-navy to-electric text-xs font-extrabold text-white shadow-sm">
+              AM
+            </span>
+            <div class="text-left">
+              <span id="userNavName" class="block text-xs font-extrabold text-navy">Aarav Mehta</span>
+              <span id="userNavRole" class="block text-[9px] font-bold text-slate-400">Builder</span>
+            </div>
+            <span class="material-symbols-outlined text-[18px] text-slate-400">expand_more</span>
+          </button>
+
+          <!-- User dropdown menu -->
+          <div id="userDropdownMenu" class="absolute right-0 top-12 z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+            <div class="border-b border-slate-100 px-3 py-2">
+              <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Signed in as</p>
+              <p id="dropdownUserEmail" class="truncate text-xs font-bold text-navy">aarav.mehta@example.com</p>
+            </div>
+            <div class="mt-1 space-y-0.5 text-xs font-semibold text-slate-600">
+              <a href="AiMatch.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-blue-50 hover:text-electric">
+                <span class="material-symbols-outlined text-[17px]">auto_awesome</span> My AI Matches
+              </a>
+              <a href="Dashboard.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-blue-50 hover:text-electric">
+                <span class="material-symbols-outlined text-[17px]">dashboard</span> Dashboard
+              </a>
+              <a href="OpportunityFeed.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-blue-50 hover:text-electric">
+                <span class="material-symbols-outlined text-[17px]">rss_feed</span> Opportunity Feed
+              </a>
+              <a href="ProfileCreation.html" class="flex items-center gap-2.5 rounded-xl px-3 py-2 hover:bg-blue-50 hover:text-electric">
+                <span class="material-symbols-outlined text-[17px]">tune</span> Edit Profile Signals
+              </a>
+              <button id="switchPersonaBtn" class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left hover:bg-blue-50 hover:text-electric">
+                <span class="material-symbols-outlined text-[17px]">swap_horiz</span> Switch Persona / Account
+              </button>
+            </div>
+            <div class="mt-1 border-t border-slate-100 pt-1">
+              <button id="signOutBtn" class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-bold text-rose-600 hover:bg-rose-50">
+                <span class="material-symbols-outlined text-[17px]">logout</span> Sign out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="mobileMenuButton" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-navy md:hidden" aria-label="Open navigation">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-5 py-4 md:hidden">
+      <div class="flex flex-col gap-1">
+        <a class="rounded-xl px-4 py-3 text-sm font-semibold text-electric hover:bg-blue-50" href="LandingScreen.html">Home</a>
+        <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="AiMatch.html">Matches</a>
+        <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="OpportunityFeed.html">Feed</a>
+        <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="Dashboard.html">Dashboard</a>
+        <a class="mt-2 rounded-xl bg-navy px-4 py-3 text-center text-sm font-bold text-white" href="ProfileCreation.html">Build my profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-16 sm:px-8 md:pb-28 md:pt-24 lg:grid-cols-[1.05fr_.95fr] lg:gap-10">
+        <div class="relative z-10 max-w-2xl">
+          <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-3.5 py-2 text-xs font-bold text-blue-700 shadow-sm backdrop-blur">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-electric opacity-60"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-electric"></span>
+            </span>
+            AI-powered student community discovery
+          </div>
+
+          <h1 class="text-5xl font-extrabold leading-[1.04] tracking-[-0.045em] text-navy sm:text-6xl lg:text-[70px]">
+            Stop scrolling.
+            <span class="gradient-text block">Start connecting.</span>
+          </h1>
+
+          <p class="mt-7 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+            Aleropath Connect turns scattered student opportunities into one intelligent
+            discovery layer — matching you with the right <strong class="font-semibold text-navy">people, events, and projects</strong>.
+          </p>
+
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="ProfileCreation.html" class="group inline-flex items-center justify-center gap-2 rounded-2xl bg-electric px-6 py-4 text-sm font-bold text-white shadow-xl shadow-blue-500/20 transition duration-300 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-glow" id="heroCta">
+              Find my matches
+              <span class="material-symbols-outlined text-[19px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </a>
+            <a href="#how-it-works" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-6 py-4 text-sm font-bold text-navy transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:bg-blue-50/70">
+              See how it works
+              <span class="material-symbols-outlined text-[19px]">play_circle</span>
+            </a>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-semibold text-slate-500">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[17px] text-electric">auto_awesome</span>AI-ranked matches</span>
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[17px] text-electric">bolt</span>Instant opportunity tagging</span>
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[17px] text-electric">database</span>One connected feed</span>
+          </div>
+        </div>
+
+        <!-- Product preview -->
+        <div class="relative mx-auto w-full max-w-xl lg:ml-auto">
+          <div class="absolute -inset-8 rounded-[3rem] bg-blue-400/10 blur-3xl"></div>
+
+          <div class="glass relative rounded-[30px] border border-white/90 p-3 shadow-soft">
+            <div class="overflow-hidden rounded-[24px] border border-slate-200/80 bg-white">
+              <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+                    <span class="material-symbols-outlined text-[19px]">auto_awesome</span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-extrabold text-navy">AI Matches</p>
+                    <p class="text-[10px] text-slate-400">Personalized in real time</p>
+                  </div>
+                </div>
+                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">ACTIVE GRAPH</span>
+              </div>
+
+              <div class="space-y-3 p-4">
+                <a href="AiMatch.html" class="block rounded-2xl border border-blue-100 bg-blue-50/60 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                  <div class="flex items-start gap-3">
+                    <div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white">AI</div>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="truncate text-sm font-bold text-navy">AI Study Buddy — MVP Team</p>
+                        <span class="text-xs font-extrabold text-electric">96% fit</span>
+                      </div>
+                      <p class="mt-1 text-[11px] leading-5 text-slate-500">Matches your React & TypeScript skills and aligns with your EdTech goal.</p>
+                      <div class="mt-3 flex flex-wrap gap-1.5">
+                        <span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-blue-700">React</span>
+                        <span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-blue-700">EdTech</span>
+                        <span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-blue-700">MVP</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="AiMatch.html" class="block rounded-2xl border border-slate-100 bg-slate-50/80 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                  <div class="flex items-start gap-3">
+                    <div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 text-sm font-bold text-white">GA</div>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="truncate text-sm font-bold text-navy">GenAI India Build Challenge</p>
+                        <span class="text-xs font-extrabold text-electric">92% fit</span>
+                      </div>
+                      <p class="mt-1 text-[11px] leading-5 text-slate-500">Strong fit for your innovation interests and hackathon team goals.</p>
+                      <div class="mt-3 flex flex-wrap gap-1.5">
+                        <span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-slate-600">GenAI</span>
+                        <span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-slate-600">RAG</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <div class="rounded-2xl border border-slate-100 bg-white p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[16px] text-electric">verified</span>
+                      <span class="text-[10px] font-bold text-navy">Deterministic 60–99% scoring engine</span>
+                    </div>
+                    <a href="AiMatch.html" class="text-[10px] font-bold text-electric hover:underline">Explore →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating insight -->
+          <div class="absolute -bottom-7 -left-4 hidden animate-float rounded-2xl border border-white bg-white p-3 shadow-xl sm:block">
+            <div class="flex items-center gap-3">
+              <div class="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+                <span class="material-symbols-outlined text-[18px]">check_circle</span>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Explainable AI</p>
+                <p class="text-xs font-bold text-navy">Clear reason for every match</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -right-3 top-10 hidden rounded-2xl border border-white bg-navy px-4 py-3 shadow-xl sm:block">
+            <div class="flex items-center gap-2 text-white">
+              <span class="material-symbols-outlined text-[17px] text-blue-300">psychology</span>
+              <span class="text-xs font-bold">Personalized discovery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social proof / value strip -->
+    <section class="border-y border-slate-200/80 bg-white/65">
+      <div class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-6 sm:px-8 md:flex-row md:items-center md:justify-between">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">One layer across fragmented communities</p>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+          <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5">WhatsApp</span>
+          <span class="text-slate-300">+</span>
+          <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5">Instagram</span>
+          <span class="text-slate-300">+</span>
+          <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5">Discord</span>
+          <span class="text-slate-300">+</span>
+          <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5">Telegram</span>
+          <span class="text-slate-300">→</span>
+          <span class="rounded-full bg-navy px-3 py-1.5 text-white">Aleropath Connect</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core features -->
+    <section id="features" class="mx-auto max-w-7xl px-5 py-24 sm:px-8">
+      <div class="max-w-2xl">
+        <span class="text-xs font-extrabold uppercase tracking-[0.18em] text-electric">The intelligence layer</span>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-[-0.035em] text-navy sm:text-4xl">Less searching. More meaningful connections.</h2>
+        <p class="mt-4 text-base leading-7 text-slate-500">The product stays deliberately focused: structure the chaos, understand the student, and surface the best next opportunity.</p>
+      </div>
+
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        <article class="feature-card group rounded-3xl border border-slate-200/90 bg-white p-7 shadow-sm md:col-span-2">
+          <div class="flex items-start justify-between">
+            <div class="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-electric transition duration-300 group-hover:scale-110 group-hover:bg-electric group-hover:text-white">
+              <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <span class="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-blue-700">Core AI</span>
+          </div>
+          <h3 class="mt-7 text-xl font-extrabold text-navy">AI Matching Engine</h3>
+          <p class="mt-3 max-w-xl text-sm leading-6 text-slate-500">Turn a rich profile — skills, interests, intent, and goal — into ranked opportunities with a deterministic formula and human-readable explanations.</p>
+
+          <div class="mt-7 flex items-center gap-2">
+            <div class="flex -space-x-2">
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-white bg-blue-500 text-[10px] font-bold text-white">96%</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-white bg-indigo-500 text-[10px] font-bold text-white">92%</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-white bg-violet-500 text-[10px] font-bold text-white">89%</span>
+            </div>
+            <span class="text-xs font-semibold text-slate-400">weighted relevance signals</span>
+          </div>
+        </article>
+
+        <article class="feature-card group rounded-3xl border border-slate-200/90 bg-navy p-7 text-white shadow-lg shadow-navy/10">
+          <div class="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-blue-300 transition duration-300 group-hover:scale-110 group-hover:bg-electric group-hover:text-white">
+            <span class="material-symbols-outlined">data_object</span>
+          </div>
+          <h3 class="mt-7 text-xl font-extrabold">AI Auto-Tagging</h3>
+          <p class="mt-3 text-sm leading-6 text-blue-100/70">Paste messy opportunity text. Aleropath extracts title, category, date, skills, and tags — then adds it to the graph.</p>
+          <div class="mt-7 rounded-2xl border border-white/10 bg-white/5 p-3">
+            <div class="flex items-center gap-2 text-[10px] font-semibold text-blue-100/60">
+              <span class="material-symbols-outlined text-[15px]">content_paste</span>
+              Raw community post
+            </div>
+            <div class="mt-2 h-2 w-4/5 rounded-full bg-white/10"></div>
+            <div class="mt-2 h-2 w-3/5 rounded-full bg-white/10"></div>
+            <div class="mt-3 flex gap-1.5">
+              <span class="rounded-full bg-electric/20 px-2 py-1 text-[9px] font-bold text-blue-200">AI</span>
+              <span class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-bold text-blue-100/70">Structured</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="feature-card group rounded-3xl border border-slate-200/90 bg-white p-7">
+          <div class="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 transition duration-300 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white">
+            <span class="material-symbols-outlined">hub</span>
+          </div>
+          <h3 class="mt-7 text-xl font-extrabold text-navy">One opportunity feed</h3>
+          <p class="mt-3 text-sm leading-6 text-slate-500">People, events, and projects live together instead of being buried across disconnected groups.</p>
+        </article>
+
+        <article class="feature-card group rounded-3xl border border-slate-200/90 bg-white p-7 md:col-span-2">
+          <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+            <div>
+              <div class="grid h-12 w-12 place-items-center rounded-2xl bg-violet-50 text-violet-600 transition duration-300 group-hover:scale-110 group-hover:bg-violet-500 group-hover:text-white">
+                <span class="material-symbols-outlined">insights</span>
+              </div>
+              <h3 class="mt-7 text-xl font-extrabold text-navy">Designed for a meaningful connection</h3>
+              <p class="mt-3 max-w-lg text-sm leading-6 text-slate-500">The journey ends where the hackathon story begins: a student finds something that actually fits, instead of endlessly scrolling.</p>
+            </div>
+            <div class="shrink-0 rounded-3xl bg-slate-50 p-5">
+              <div class="flex items-center gap-3">
+                <span class="grid h-10 w-10 place-items-center rounded-xl bg-white text-emerald-600 shadow-sm">
+                  <span class="material-symbols-outlined">handshake</span>
+                </span>
+                <div>
+                  <p class="text-xs font-extrabold text-navy">Connection made</p>
+                  <p class="text-[10px] text-slate-400">Right person · right opportunity</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="border-y border-slate-200/80 bg-white/70">
+      <div class="mx-auto max-w-7xl px-5 py-24 sm:px-8">
+        <div class="text-center">
+          <span class="text-xs font-extrabold uppercase tracking-[0.18em] text-electric">Simple by design</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-[-0.035em] text-navy sm:text-4xl">From profile to opportunity in one flow.</h2>
+          <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-500">Our core workflow follows the project architecture: understand the student, rank the best matches, structure new opportunities, and make the connection.</p>
+        </div>
+
+        <div class="relative mt-14 grid gap-6 md:grid-cols-4">
+          <div class="absolute left-[12%] right-[12%] top-7 hidden h-px bg-gradient-to-r from-blue-100 via-electric/40 to-blue-100 md:block"></div>
+
+          <div class="relative text-center">
+            <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-blue-100 bg-white text-electric shadow-sm">01</div>
+            <h3 class="mt-5 text-sm font-extrabold text-navy">Create your profile</h3>
+            <p class="mt-2 text-xs leading-5 text-slate-500">Skills, interests, intent, and your goal right now.</p>
+          </div>
+
+          <div class="relative text-center">
+            <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-blue-100 bg-white text-electric shadow-sm">02</div>
+            <h3 class="mt-5 text-sm font-extrabold text-navy">AI ranks matches</h3>
+            <p class="mt-2 text-xs leading-5 text-slate-500">Get the strongest people, events, and projects first.</p>
+          </div>
+
+          <div class="relative text-center">
+            <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-blue-100 bg-white text-electric shadow-sm">03</div>
+            <h3 class="mt-5 text-sm font-extrabold text-navy">Structure the chaos</h3>
+            <p class="mt-2 text-xs leading-5 text-slate-500">Paste a raw opportunity and let AI turn it into structured data.</p>
+          </div>
+
+          <div class="relative text-center">
+            <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-blue-100 bg-navy text-white shadow-lg shadow-blue-900/10">04</div>
+            <h3 class="mt-5 text-sm font-extrabold text-navy">Make the connection</h3>
+            <p class="mt-2 text-xs leading-5 text-slate-500">Discover something relevant enough to act on.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto max-w-7xl px-5 py-20 sm:px-8 md:py-24">
+        <div class="relative overflow-hidden rounded-[32px] bg-navy px-7 py-12 text-center shadow-2xl shadow-blue-900/15 sm:px-12">
+          <div class="absolute -right-24 -top-32 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"></div>
+          <div class="absolute -bottom-32 -left-20 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl"></div>
+
+          <div class="relative">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-blue-200" id="finalCtaBadge">
+              <span class="material-symbols-outlined text-[14px]">rocket_launch</span>
+              Ready to discover?
+            </span>
+            <h2 class="mx-auto mt-5 max-w-2xl text-3xl font-extrabold tracking-[-0.035em] text-white sm:text-4xl" id="finalCtaTitle">Your next meaningful connection could be one match away.</h2>
+            <p class="mx-auto mt-4 max-w-xl text-sm leading-6 text-blue-100/70" id="finalCtaSub">Build your profile and let Aleropath Connect do the searching.</p>
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-3" id="finalCtaActions">
+              <a href="ProfileCreation.html" class="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-4 text-sm font-extrabold text-navy shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-blue-50" id="finalCtaBtn">
+                Build my profile
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sign In / Persona Switcher Modal -->
+  <div id="signInModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div id="signInModalBackdrop" class="absolute inset-0 bg-navy/60 backdrop-blur-sm"></div>
+    <div class="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-[28px] border border-slate-200 bg-white p-6 shadow-2xl sm:p-8">
+      <button id="closeSignInModal" class="absolute right-5 top-5 grid h-8 w-8 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-navy">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-blue-50 text-electric">
+          <span class="material-symbols-outlined text-[22px]">login</span>
+        </span>
+        <div>
+          <h3 class="text-xl font-extrabold tracking-tight text-navy">Sign in to Aleropath</h3>
+          <p class="text-xs text-slate-400">Choose a community member or enter your credentials</p>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <p class="text-[10px] font-extrabold uppercase tracking-[.14em] text-slate-400">Quick Test Personas (1-Click Login)</p>
+        <div class="mt-3 grid gap-2.5" id="personasGrid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="my-5 flex items-center gap-3">
+        <div class="h-px flex-1 bg-slate-100"></div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">or custom email</span>
+        <div class="h-px flex-1 bg-slate-100"></div>
+      </div>
+
+      <form id="customSignInForm" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-navy">Full Name</label>
+          <input id="customSignInName" type="text" placeholder="e.g. Maya Chen" class="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-navy">Email Address</label>
+          <input id="customSignInEmail" type="email" placeholder="e.g. maya@example.com" class="mt-1 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+        </div>
+        <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-navy py-3 text-xs font-bold text-white shadow-sm transition hover:bg-electric">
+          Sign In Now
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </button>
+      </form>
+
+      <div class="mt-5 border-t border-slate-100 pt-4 text-center">
+        <p class="text-xs text-slate-500">
+          New here?
+          <a href="ProfileCreation.html" class="font-bold text-electric hover:underline">Create a full match profile →</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-8 sm:px-8 md:flex-row md:items-center md:justify-between">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-navy text-white">
+            <span class="material-symbols-outlined text-[17px]">hub</span>
+          </span>
+          <span class="text-sm font-extrabold text-navy">Aleropath Connect</span>
+        </div>
+        <p class="mt-2 text-xs text-slate-400">A smarter discovery layer for student communities.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-slate-400">
+        <a href="AiMatch.html" class="transition hover:text-electric">Matches</a>
+        <a href="OppurtunityFeed.html" class="transition hover:text-electric">Opportunity Feed</a>
+        <a href="Dashboard.html" class="transition hover:text-electric">Dashboard</a>
+        <a href="ProfileCreation.html" class="transition hover:text-electric">Get started</a>
+      </div>
+
+      <p class="text-xs text-slate-400">© 2026 Aleropath Connect</p>
+    </div>
+  </footer>
+
+  <script src="/aleropath-core.js"></script>
+  <script>
+    const menuButton = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuButton.addEventListener("click", () => {
+      const isHidden = mobileMenu.classList.toggle("hidden");
+      menuButton.setAttribute("aria-expanded", String(!isHidden));
+      menuButton.querySelector(".material-symbols-outlined").textContent = isHidden ? "menu" : "close";
+    });
+
+    mobileMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.querySelector(".material-symbols-outlined").textContent = "menu";
+      });
+    });
+
+    // Helper: get initials
+    function getInitials(name) {
+      if (!name) return "AC";
+      const parts = name.trim().split(/\s+/);
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    // Refresh landing UI depending on signed-in state
+    async function updateLandingUI() {
+      const isSignedIn = window.Aleropath ? window.Aleropath.isSignedIn() : false;
+      const profile = window.Aleropath ? window.Aleropath.getProfile() : null;
+
+      const navAuth = document.getElementById("navAuthContainer");
+      const navUser = document.getElementById("navUserContainer");
+
+      if (isSignedIn && profile && profile.name) {
+        // Show user container in header
+        if (navAuth) navAuth.style.display = "none";
+        if (navUser) navUser.style.display = "flex";
+
+        const firstName = profile.name.split(" ")[0];
+        document.getElementById("userNavName").textContent = profile.name;
+        document.getElementById("userNavRole").textContent = profile.role || "Member";
+        document.getElementById("userNavAvatar").textContent = getInitials(profile.name);
+        document.getElementById("dropdownUserEmail").textContent = profile.email || `${firstName.toLowerCase()}@aleropath.io`;
+
+        // Update hero buttons & badge
+        const heroCta = document.getElementById("heroCta");
+        if (heroCta) {
+          heroCta.innerHTML = `
+            View My AI Matches
+            <span class="material-symbols-outlined text-[19px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+          `;
+          heroCta.href = "AiMatch.html";
+        }
+
+        // Update Final CTA section at bottom
+        const finalBadge = document.getElementById("finalCtaBadge");
+        const finalTitle = document.getElementById("finalCtaTitle");
+        const finalSub = document.getElementById("finalCtaSub");
+        const finalActions = document.getElementById("finalCtaActions");
+
+        if (finalBadge) {
+          finalBadge.innerHTML = `<span class="material-symbols-outlined text-[14px]">verified</span> Welcome back, ${firstName}`;
+        }
+        if (finalTitle) {
+          finalTitle.textContent = `Your AI opportunity graph is active, ${firstName}.`;
+        }
+        if (finalSub) {
+          finalSub.textContent = `Explore 18+ high-fit matches aligned with your ${profile.field || 'technical'} journey.`;
+        }
+        if (finalActions) {
+          finalActions.innerHTML = `
+            <a href="AiMatch.html" class="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-4 text-sm font-extrabold text-navy shadow-xl transition duration-300 hover:-translate-y-1 hover:bg-blue-50">
+              View AI Matches
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+            <a href="Dashboard.html" class="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-sm font-bold text-white transition duration-300 hover:-translate-y-1 hover:bg-white/20">
+              My Dashboard
+              <span class="material-symbols-outlined text-[18px]">dashboard</span>
+            </a>
+          `;
+        }
+
+        // Mobile menu signed-in state
+        const mobileMenuEl = document.getElementById("mobileMenu");
+        if (mobileMenuEl) {
+          mobileMenuEl.innerHTML = `
+            <div class="flex flex-col gap-1">
+              <div class="mb-2 flex items-center gap-3 rounded-2xl bg-blue-50/70 p-3">
+                <span class="grid h-9 w-9 place-items-center rounded-xl bg-navy text-xs font-bold text-white">${getInitials(profile.name)}</span>
+                <div>
+                  <p class="text-xs font-bold text-navy">${profile.name}</p>
+                  <p class="text-[10px] text-slate-400">${profile.role || 'Member'} · ${profile.city || 'India'}</p>
+                </div>
+              </div>
+              <a class="rounded-xl px-4 py-2.5 text-sm font-semibold text-electric hover:bg-blue-50" href="LandingScreen.html">Home</a>
+              <a class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50" href="AiMatch.html">Matches</a>
+              <a class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50" href="OppurtunityFeed.html">Feed</a>
+              <a class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50" href="Dashboard.html">Dashboard</a>
+              <a class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50" href="ProfileCreation.html">Edit Profile</a>
+              <button id="mobileSignOutBtn" class="mt-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-center text-xs font-bold text-rose-600 hover:bg-rose-100">Sign out</button>
+            </div>
+          `;
+          const mobSignOut = document.getElementById("mobileSignOutBtn");
+          if (mobSignOut) {
+            mobSignOut.addEventListener("click", () => {
+              window.Aleropath.signOut();
+              window.location.reload();
+            });
+          }
+        }
+
+        // Load personalized top matches preview in Hero
+        loadPersonalizedHeroPreview(profile);
+      } else {
+        // Guest mode
+        if (navAuth) navAuth.style.display = "flex";
+        if (navUser) navUser.style.display = "none";
+
+        const mobileMenuEl = document.getElementById("mobileMenu");
+        if (mobileMenuEl) {
+          mobileMenuEl.innerHTML = `
+            <div class="flex flex-col gap-1">
+              <a class="rounded-xl px-4 py-3 text-sm font-semibold text-electric hover:bg-blue-50" href="LandingScreen.html">Home</a>
+              <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="AiMatch.html">Matches</a>
+              <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="OppurtunityFeed.html">Feed</a>
+              <a class="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50" href="Dashboard.html">Dashboard</a>
+              <button id="mobileSignInBtn" class="mt-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-center text-xs font-bold text-navy hover:bg-slate-100">Sign in</button>
+              <a class="mt-1 rounded-xl bg-navy px-4 py-3 text-center text-sm font-bold text-white" href="ProfileCreation.html">Build my profile</a>
+            </div>
+          `;
+          const mobSignIn = document.getElementById("mobileSignInBtn");
+          if (mobSignIn) mobSignIn.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+            openModal();
+          });
+        }
+      }
+    }
+
+    async function loadPersonalizedHeroPreview(profile) {
+      if (!window.Aleropath) return;
+      try {
+        const matches = await window.Aleropath.computePersonalizedMatches(profile);
+        if (matches && matches.length >= 2) {
+          const m1 = matches[0];
+          const m2 = matches[1];
+
+          const container = document.querySelector(".glass .space-y-3.p-4");
+          if (container) {
+            container.innerHTML = `
+              <a href="AiMatch.html" class="block rounded-2xl border border-blue-100 bg-blue-50/60 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white">
+                    ${m1.type === "person" ? (m1.avatar || "AC") : `<span class="material-symbols-outlined text-[19px]">rocket_launch</span>`}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <p class="truncate text-sm font-bold text-navy">${m1.title}</p>
+                      <span class="text-xs font-extrabold text-electric">${m1.score}% fit</span>
+                    </div>
+                    <p class="mt-1 text-[11px] leading-5 text-slate-500">${m1.reason}</p>
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                      ${(m1.tags || []).slice(0, 3).map(t => `<span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-blue-700">${t}</span>`).join("")}
+                    </div>
+                  </div>
+                </div>
+              </a>
+
+              <a href="AiMatch.html" class="block rounded-2xl border border-slate-100 bg-slate-50/80 p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 text-sm font-bold text-white">
+                    ${m2.type === "person" ? (m2.avatar || "AC") : `<span class="material-symbols-outlined text-[19px]">event</span>`}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <p class="truncate text-sm font-bold text-navy">${m2.title}</p>
+                      <span class="text-xs font-extrabold text-electric">${m2.score}% fit</span>
+                    </div>
+                    <p class="mt-1 text-[11px] leading-5 text-slate-500">${m2.reason}</p>
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                      ${(m2.tags || []).slice(0, 3).map(t => `<span class="rounded-full bg-white px-2 py-1 text-[9px] font-bold text-slate-600">${t}</span>`).join("")}
+                    </div>
+                  </div>
+                </div>
+              </a>
+
+              <div class="rounded-2xl border border-slate-100 bg-white p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-electric">verified</span>
+                    <span class="text-[10px] font-bold text-navy">Deterministic 60–99% scoring engine</span>
+                  </div>
+                  <a href="AiMatch.html" class="text-[10px] font-bold text-electric hover:underline">View All ${matches.length} Matches →</a>
+                </div>
+              </div>
+            `;
+          }
+        }
+      } catch (e) {
+        console.warn("Could not compute live preview:", e);
+      }
+    }
+
+    // Modal logic
+    const signInModal = document.getElementById("signInModal");
+    const navSignInBtn = document.getElementById("navSignInBtn");
+    const closeSignInModal = document.getElementById("closeSignInModal");
+    const signInModalBackdrop = document.getElementById("signInModalBackdrop");
+    const userProfileBtn = document.getElementById("userProfileBtn");
+    const userDropdownMenu = document.getElementById("userDropdownMenu");
+    const signOutBtn = document.getElementById("signOutBtn");
+    const switchPersonaBtn = document.getElementById("switchPersonaBtn");
+
+    function openModal() {
+      renderPersonas();
+      signInModal.classList.remove("hidden");
+      signInModal.classList.add("flex");
+    }
+
+    function closeModal() {
+      signInModal.classList.add("hidden");
+      signInModal.classList.remove("flex");
+    }
+
+    if (navSignInBtn) navSignInBtn.addEventListener("click", openModal);
+    if (closeSignInModal) closeSignInModal.addEventListener("click", closeModal);
+    if (signInModalBackdrop) signInModalBackdrop.addEventListener("click", closeModal);
+
+    if (userProfileBtn && userDropdownMenu) {
+      userProfileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        userDropdownMenu.classList.toggle("hidden");
+      });
+      document.addEventListener("click", () => {
+        userDropdownMenu.classList.add("hidden");
+      });
+    }
+
+    if (switchPersonaBtn) {
+      switchPersonaBtn.addEventListener("click", () => {
+        userDropdownMenu.classList.add("hidden");
+        openModal();
+      });
+    }
+
+    if (signOutBtn) {
+      signOutBtn.addEventListener("click", () => {
+        window.Aleropath.signOut();
+        window.location.reload();
+      });
+    }
+
+    // Render personas in modal
+    function renderPersonas() {
+      const personas = (window.Aleropath && window.Aleropath.DEMO_PERSONAS) ? window.Aleropath.DEMO_PERSONAS : [];
+      const grid = document.getElementById("personasGrid");
+      if (!grid) return;
+
+      grid.innerHTML = personas.map(p => `
+        <button type="button" class="persona-select-btn flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/70 p-3 text-left transition hover:border-blue-300 hover:bg-blue-50/60" data-id="${p.id}">
+          <div class="flex items-center gap-3">
+            <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-navy to-electric text-xs font-extrabold text-white">
+              ${getInitials(p.name)}
+            </span>
+            <div>
+              <p class="text-xs font-extrabold text-navy">${p.name}</p>
+              <p class="text-[10px] text-slate-400">${p.role} · ${p.city}</p>
+            </div>
+          </div>
+          <span class="rounded-full bg-white px-2.5 py-1 text-[9px] font-bold text-electric shadow-sm">
+            Sign In →
+          </span>
+        </button>
+      `).join("");
+
+      grid.querySelectorAll(".persona-select-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const selected = personas.find(x => x.id === btn.dataset.id);
+          if (selected) {
+            window.Aleropath.signIn(selected);
+            closeModal();
+            updateLandingUI();
+            window.Aleropath.showToast(`Signed in as ${selected.name}!`);
+          }
+        });
+      });
+    }
+
+    // Custom sign-in form
+    const customForm = document.getElementById("customSignInForm");
+    if (customForm) {
+      customForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("customSignInName").value.trim();
+        const email = document.getElementById("customSignInEmail").value.trim();
+        if (!name || !email) {
+          window.Aleropath.showToast("Please enter your name and email.", "info");
+          return;
+        }
+        window.Aleropath.signIn({
+          id: 'p_' + Date.now(),
+          name,
+          email,
+          role: "Builder",
+          city: "Bengaluru",
+          skills: ["React", "TypeScript", "AI"],
+          interests: ["Communities", "Projects"],
+          goal: "Explore and collaborate on student projects"
+        });
+        closeModal();
+        updateLandingUI();
+        window.Aleropath.showToast(`Welcome, ${name}!`);
+      });
+    }
+
+    // Initialize UI on load
+    updateLandingUI();
+  </script>
+</body>
+</html>

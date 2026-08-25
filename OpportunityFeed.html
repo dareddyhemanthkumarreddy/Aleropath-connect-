@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07142f" />
+  <title>Aleropath Connect — Opportunity Feed & Intelligence</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07142f",
+            navy: "#0b1f3a",
+            electric: "#2f6df6",
+            mist: "#f6f9ff",
+            line: "#dce5f4"
+          },
+          boxShadow: {
+            soft: "0 18px 55px rgba(7,20,47,.08)",
+            glow: "0 18px 60px rgba(47,109,246,.18)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 88% 4%, rgba(47,109,246,.11), transparent 26rem),
+        radial-gradient(circle at 4% 45%, rgba(98,139,232,.08), transparent 24rem),
+        #f8faff;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(11,31,58,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,31,58,.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+    }
+    .glass {
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .card {
+      background: rgba(255,255,255,.9);
+      border: 1px solid #e1e8f3;
+      box-shadow: 0 12px 38px rgba(7,20,47,.045);
+      transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: #bfd2f2;
+      box-shadow: 0 25px 60px rgba(7,20,47,.10);
+    }
+    .tab {
+      transition: .18s ease;
+    }
+    .tab.active {
+      background: #0b1f3a;
+      color: #fff;
+      border-color: #0b1f3a;
+      box-shadow: 0 8px 24px rgba(7,20,47,.12);
+    }
+    .type-pill {
+      letter-spacing: .13em;
+    }
+    .ai-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-shine::after {
+      content: "";
+      position: absolute;
+      top: -130%;
+      left: -35%;
+      width: 30%;
+      height: 360%;
+      transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+      animation: shine 5.5s infinite;
+    }
+    @keyframes shine {
+      0%, 55% { left: -40%; }
+      76%, 100% { left: 135%; }
+    }
+    .pulse-dot { animation: pulse 1.8s infinite; }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(47,109,246,.22); }
+      50% { box-shadow: 0 0 0 8px rgba(47,109,246,0); }
+    }
+    .fade-up { animation: fadeUp .45s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .loading-shimmer {
+      background: linear-gradient(90deg, #eef3fb 25%, #f8fbff 50%, #eef3fb 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.3s infinite;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .drop-active {
+      border-color: #2f6df6 !important;
+      background: #eff5ff !important;
+    }
+    .tag {
+      transition: .18s ease;
+    }
+    .tag:hover {
+      transform: translateY(-1px);
+      border-color: #bcd1f4;
+      background: #f4f8ff;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-ink antialiased">
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="grid-bg absolute inset-0"></div>
+    <div class="absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-blue-400/10 blur-3xl"></div>
+    <div class="absolute -left-40 top-[45%] h-[28rem] w-[28rem] rounded-full bg-indigo-300/10 blur-3xl"></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+    <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+      <a href="LandingScreen.html" class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg shadow-blue-900/10">
+          <span class="material-symbols-outlined text-[21px]">hub</span>
+        </span>
+        <span>
+          <span class="block text-[15px] font-extrabold tracking-tight text-navy">Aleropath</span>
+          <span class="block text-[10px] font-bold tracking-[.2em] text-slate-400">CONNECT</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 md:flex">
+        <a href="LandingScreen.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Home</a>
+        <a href="AiMatch.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl bg-navy px-4 py-2 text-xs font-bold text-white shadow-sm">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Dashboard</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="ProfileCreation.html" class="hidden rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-600 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-electric sm:inline-flex">
+          Edit profile
+        </a>
+        <button id="mobileNav" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-navy md:hidden">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-5 py-3 md:hidden">
+      <div class="grid gap-1">
+        <a href="LandingScreen.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Home</a>
+        <a href="AiMatch.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl bg-blue-50 px-3 py-2.5 text-xs font-bold text-electric">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-12">
+    <!-- HERO / VALUE PROP -->
+    <section class="relative overflow-hidden rounded-[30px] border border-blue-100 bg-gradient-to-br from-[#07142f] via-[#0b1f3a] to-[#123c87] p-6 text-white shadow-glow sm:p-9">
+      <div class="pointer-events-none absolute -right-24 -top-32 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-indigo-400/15 blur-3xl"></div>
+
+      <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.15em] text-blue-100">
+            <span class="pulse-dot h-2 w-2 rounded-full bg-blue-300"></span>
+            AI Opportunity Intelligence Studio
+          </div>
+
+          <h1 class="mt-5 max-w-3xl text-3xl font-extrabold tracking-[-.04em] sm:text-5xl">
+            Turn messy opportunity text into
+            <span class="text-blue-300">something you can act on.</span>
+          </h1>
+
+          <p class="mt-4 max-w-2xl text-sm leading-6 text-blue-100/75 sm:text-base">
+            Paste an event, project, hackathon, or mentorship post from WhatsApp, Discord, or Instagram. Aleropath structures the noise into clear signals — then adds it to the live graph.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Auto-tagged</span>
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Editable Review</span>
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Instantly Matchable</span>
+          </div>
+        </div>
+
+        <div class="hidden lg:block">
+          <div class="ai-shine rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+            <div class="flex items-center gap-3">
+              <span class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10">
+                <span class="material-symbols-outlined text-[22px] text-blue-200">auto_awesome</span>
+              </span>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[.15em] text-blue-200/60">AI Pipeline</p>
+                <p class="mt-1 text-xs font-extrabold">Raw text → Review & Edit → Publish</p>
+              </div>
+            </div>
+            <div class="mt-4 h-px bg-white/10"></div>
+            <div class="mt-4 grid grid-cols-3 gap-4">
+              <div><p class="text-xl font-extrabold">01</p><p class="text-[9px] text-blue-100/55">Paste</p></div>
+              <div><p class="text-xl font-extrabold">02</p><p class="text-[9px] text-blue-100/55">Structure</p></div>
+              <div><p class="text-xl font-extrabold">03</p><p class="text-[9px] text-blue-100/55">Discover</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRUCTURING STUDIO -->
+    <section class="mt-7 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
+      <div id="composerCard" class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+                <span class="material-symbols-outlined text-[19px]">auto_fix_high</span>
+              </span>
+              <div>
+                <p class="text-[10px] font-extrabold uppercase tracking-[.15em] text-electric">AI Auto-tagging engine</p>
+                <h2 class="mt-1 text-lg font-extrabold tracking-tight text-navy">Structure an opportunity</h2>
+              </div>
+            </div>
+            <p class="mt-3 max-w-2xl text-xs leading-5 text-slate-500">
+              Paste raw text from WhatsApp, Instagram, email, a poster, or a Discord group. You don't need to clean it first.
+            </p>
+          </div>
+          <span class="hidden rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-1.5 text-[9px] font-extrabold text-emerald-700 sm:inline-flex">
+            GEMINI READY
+          </span>
+        </div>
+
+        <div id="dropZone" class="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50/80 p-3 transition">
+          <textarea id="opportunityInput"
+            class="min-h-[170px] w-full resize-none rounded-xl border-0 bg-white p-4 text-sm leading-6 text-slate-700 outline-none ring-0 placeholder:text-slate-400 focus:ring-2 focus:ring-blue-100"
+            placeholder="e.g. Looking for a frontend dev for a 2-week React & Tailwind project in Bengaluru starting next Monday. Budget ₹25,000. Contact sarah@example.com"></textarea>
+
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap gap-2">
+              <button class="sample-btn rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[9px] font-bold text-slate-500 transition hover:border-blue-200 hover:text-electric" data-sample="event">Try Hackathon</button>
+              <button class="sample-btn rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[9px] font-bold text-slate-500 transition hover:border-blue-200 hover:text-electric" data-sample="project">Try Project</button>
+              <button class="sample-btn rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[9px] font-bold text-slate-500 transition hover:border-blue-200 hover:text-electric" data-sample="mentor">Try Mentor</button>
+            </div>
+
+            <button id="structureBtn" class="group inline-flex items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-xs font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-electric hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-60">
+              <span id="structureIcon" class="material-symbols-outlined text-[17px] transition-transform group-hover:rotate-12">auto_awesome</span>
+              <span id="structureText">Structure with AI</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE STRUCTURE PREVIEW / EDIT REVIEW STATE -->
+      <div class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-extrabold uppercase tracking-[.15em] text-slate-400">Extracted Signals</p>
+              <h2 class="mt-1 text-lg font-extrabold tracking-tight text-navy">Structured Review State</h2>
+            </div>
+            <span id="previewStatus" class="rounded-full bg-slate-100 px-2.5 py-1.5 text-[9px] font-extrabold text-slate-400">WAITING</span>
+          </div>
+
+          <div id="previewEmpty" class="mt-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center">
+            <span class="material-symbols-outlined text-3xl text-slate-300">data_object</span>
+            <p class="mt-3 text-xs font-extrabold text-navy">Your structured opportunity will appear here</p>
+            <p class="mt-1 text-[10px] leading-4 text-slate-400">Title, category, date, location, skills, tags, budget, and spots — extracted and ready to edit before publishing.</p>
+          </div>
+
+          <div id="previewOutput" class="mt-5 hidden space-y-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEED HEADER -->
+    <section class="mt-12 flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-electric">India Opportunity Graph</p>
+        <h2 class="mt-1 text-2xl font-extrabold tracking-tight text-navy">Community Feed</h2>
+        <p class="mt-2 text-xs text-slate-400">All structured opportunities loaded dynamically and scored against your profile.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2" id="filters">
+        <button class="tab active rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold" data-filter="all">All (<span id="allCount">18</span>)</button>
+        <button class="tab rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="Project">Projects</button>
+        <button class="tab rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="Event">Events</button>
+        <button class="tab rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="Competition">Competitions</button>
+        <button class="tab rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="Mentor">Mentors</button>
+      </div>
+    </section>
+
+    <!-- FEED + SIDE INSIGHT -->
+    <section class="mt-6 grid gap-6 lg:grid-cols-[1fr_290px]">
+      <div id="feedGrid" class="grid gap-5"></div>
+
+      <aside class="hidden h-fit lg:block">
+        <div class="sticky top-24 rounded-[24px] border border-slate-200 bg-white p-5 shadow-soft">
+          <div class="flex items-center gap-2">
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+              <span class="material-symbols-outlined text-[18px]">insights</span>
+            </span>
+            <div>
+              <p class="text-[9px] font-extrabold uppercase tracking-[.14em] text-slate-400">Feed stats</p>
+              <p class="mt-1 text-sm font-extrabold text-navy">Ecosystem summary</p>
+            </div>
+          </div>
+
+          <div class="mt-5 space-y-4">
+            <div class="rounded-2xl bg-slate-50 p-4">
+              <p class="text-2xl font-extrabold text-navy" id="feedCount">18</p>
+              <p class="mt-1 text-[9px] font-bold uppercase tracking-[.12em] text-slate-400">Active opportunities</p>
+            </div>
+            <div>
+              <div class="flex justify-between text-[9px] font-bold">
+                <span class="text-slate-500">Projects</span><span id="projStatCount" class="text-navy">8</span>
+              </div>
+              <div class="mt-2 h-1.5 rounded-full bg-slate-100"><div id="projBar" class="h-full w-[45%] rounded-full bg-indigo-500"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-[9px] font-bold">
+                <span class="text-slate-500">Events & Competitions</span><span id="eventStatCount" class="text-navy">7</span>
+              </div>
+              <div class="mt-2 h-1.5 rounded-full bg-slate-100"><div id="eventBar" class="h-full w-[40%] rounded-full bg-electric"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-[9px] font-bold">
+                <span class="text-slate-500">Mentors & Clinics</span><span id="mentorStatCount" class="text-navy">3</span>
+              </div>
+              <div class="mt-2 h-1.5 rounded-full bg-slate-100"><div id="mentorBar" class="h-full w-[15%] rounded-full bg-violet-500"></div></div>
+            </div>
+          </div>
+
+          <div class="mt-5 border-t border-slate-100 pt-5">
+            <p class="text-[10px] font-extrabold text-navy">The Aleropath Loop</p>
+            <div class="mt-3 grid gap-2">
+              <div class="flex items-center gap-2 text-[9px] font-semibold text-slate-500"><span class="grid h-6 w-6 place-items-center rounded-lg bg-blue-50 text-electric">1</span> Paste raw post</div>
+              <div class="flex items-center gap-2 text-[9px] font-semibold text-slate-500"><span class="grid h-6 w-6 place-items-center rounded-lg bg-blue-50 text-electric">2</span> AI extracts signals</div>
+              <div class="flex items-center gap-2 text-[9px] font-semibold text-slate-500"><span class="grid h-6 w-6 place-items-center rounded-lg bg-blue-50 text-electric">3</span> Edit & publish</div>
+              <div class="flex items-center gap-2 text-[9px] font-semibold text-slate-500"><span class="grid h-6 w-6 place-items-center rounded-lg bg-blue-50 text-electric">4</span> Matches in real time</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- PHASE 4: SMART RECOMMENDED FOR YOU CAROUSEL -->
+    <section class="mt-8 rounded-3xl border border-blue-100 bg-gradient-to-r from-blue-50/80 via-indigo-50/50 to-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-electric text-white font-extrabold">
+            <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+          </span>
+          <div>
+            <h3 class="text-sm font-extrabold text-navy">AI Recommended For You</h3>
+            <p class="text-[10px] text-slate-400">Handpicked opportunities based on your skills & goal signals</p>
+          </div>
+        </div>
+        <span class="rounded-full bg-blue-100 px-3 py-1 text-[10px] font-extrabold text-blue-700">PERSONALIZED MATCHES</span>
+      </div>
+
+      <div id="aiRecommendedList" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <div id="emptyState" class="hidden mt-6 rounded-3xl border border-dashed border-slate-300 bg-white/70 p-12 text-center">
+      <span class="material-symbols-outlined text-4xl text-slate-300">search_off</span>
+      <h3 class="mt-4 text-lg font-extrabold text-navy">No opportunities found</h3>
+      <p class="mx-auto mt-2 max-w-md text-xs leading-5 text-slate-400">Try another filter or paste and structure a new opportunity above.</p>
+    </div>
+
+    <!-- NEXT STEP CTA -->
+    <section class="mt-12 overflow-hidden rounded-[28px] border border-blue-100 bg-blue-50/60">
+      <div class="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <div class="flex gap-3">
+          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white text-electric shadow-sm">
+            <span class="material-symbols-outlined text-[19px]">hub</span>
+          </span>
+          <div>
+            <p class="text-xs font-extrabold text-navy">See how these opportunities match your profile.</p>
+            <p class="mt-1 max-w-xl text-[10px] leading-5 text-slate-500">Every opportunity in this feed is evaluated by our deterministic matching engine against your skills, intent, and goals.</p>
+          </div>
+        </div>
+        <a href="AiMatch.html" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-xs font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-electric hover:shadow-glow">
+          See AI Matches
+          <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- DETAILS MODAL -->
+  <div id="detailsModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-5">
+    <div id="modalBackdrop" class="absolute inset-0 bg-navy/50 backdrop-blur-sm"></div>
+    <div class="relative max-h-[90vh] w-full max-w-2xl overflow-auto rounded-[28px] border border-white/60 bg-white p-6 shadow-2xl sm:p-8">
+      <button id="closeModal" class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-navy">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="/aleropath-core.js"></script>
+  <script>
+    const samples = {
+      event: "GenAI India Hackathon: Join 300+ developers for a 36-hour sprint in Bengaluru on September 28. Mentors from top AI labs will be available. Total prizes ₹1,00,000. Seeking developers with Python, RAG, and React experience. Register on Aleropath.",
+      project: "Looking for a passionate React and TypeScript developer to help build an MVP for a student mental wellness app in Mumbai. 3-4 week commitment. Hybrid mode. ₹25,000 stipend available. Contact me to join.",
+      mentor: "Senior Product Architect offering 1-on-1 Office Hours on SaaS validation, MVP roadmap design, user interviews and pitch deck feedback. Free for student founders in India. Remote/Online on Google Meet."
+    };
+
+    let allOpportunities = [];
+    let currentFilter = "all";
+    let lastExtractedData = null;
+
+    function typeIcon(category, type) {
+      const c = (category || type || "").toLowerCase();
+      if (c.includes("event") || c.includes("competition") || c.includes("workshop") || c.includes("community")) return "event";
+      if (c.includes("mentor")) return "school";
+      return "rocket_launch";
+    }
+
+    function typeClasses(category, type) {
+      const c = (category || type || "").toLowerCase();
+      if (c.includes("competition")) return "bg-amber-50 text-amber-700 border-amber-200";
+      if (c.includes("workshop")) return "bg-emerald-50 text-emerald-700 border-emerald-200";
+      if (c.includes("event") || c.includes("community")) return "bg-blue-50 text-blue-700 border-blue-200";
+      if (c.includes("mentor")) return "bg-violet-50 text-violet-700 border-violet-200";
+      return "bg-indigo-50 text-indigo-700 border-indigo-200";
+    }
+
+    async function loadFeed() {
+      const profile = window.Aleropath.getProfile();
+      const rawOpps = await window.Aleropath.getAllOpportunities();
+
+      allOpportunities = rawOpps.map(o => {
+        const match = window.Aleropath.calculateMatch(profile, o);
+        return {
+          ...o,
+          score: match.score,
+          matchReason: match.reason,
+          whyNow: match.why_now
+        };
+      }).sort((a, b) => b.score - a.score);
+
+      renderFeed(currentFilter);
+      updateStats();
+    }
+
+    function updateStats() {
+      const total = allOpportunities.length;
+      document.getElementById("allCount").textContent = total;
+      document.getElementById("feedCount").textContent = total;
+
+      const projCount = allOpportunities.filter(o => (o.category === "Project" || o.type === "project")).length;
+      const eventCount = allOpportunities.filter(o => ["Event", "Competition", "Workshop", "Community"].includes(o.category)).length;
+      const mentorCount = allOpportunities.filter(o => (o.category === "Mentor" || o.type === "mentor")).length;
+
+      document.getElementById("projStatCount").textContent = projCount;
+      document.getElementById("eventStatCount").textContent = eventCount;
+      document.getElementById("mentorStatCount").textContent = mentorCount;
+
+      document.getElementById("projBar").style.width = `${Math.round((projCount / Math.max(1, total)) * 100)}%`;
+      document.getElementById("eventBar").style.width = `${Math.round((eventCount / Math.max(1, total)) * 100)}%`;
+      document.getElementById("mentorBar").style.width = `${Math.round((mentorCount / Math.max(1, total)) * 100)}%`;
+    }
+
+    function renderFeed(filter = "all") {
+      const grid = document.getElementById("feedGrid");
+      const empty = document.getElementById("emptyState");
+
+      let visible = allOpportunities;
+      if (filter !== "all") {
+        visible = allOpportunities.filter(o => {
+          if (filter === "Event") return ["Event", "Community"].includes(o.category);
+          return o.category === filter;
+        });
+      }
+
+      if (!visible.length) {
+        grid.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
+
+      empty.classList.add("hidden");
+
+      // Phase 4: Render AI Recommended Picks Carousel
+      const recContainer = document.getElementById("aiRecommendedList");
+      if (recContainer) {
+        const topPicks = [...allOpportunities].sort((a, b) => b.score - a.score).slice(0, 3);
+        recContainer.innerHTML = topPicks.map(p => `
+          <div class="rounded-2xl border border-blue-100 bg-white p-4 space-y-2 shadow-sm hover:shadow-md transition cursor-pointer" onclick="openDetails('${p.id}')">
+            <div class="flex items-center justify-between">
+              <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-[8px] font-extrabold text-blue-700 uppercase tracking-wider">${p.category || 'OPPORTUNITY'}</span>
+              <span class="text-xs font-extrabold text-emerald-600">${p.score}% fit</span>
+            </div>
+            <h4 class="text-xs font-extrabold text-navy truncate">${p.title}</h4>
+            <p class="text-[10px] text-slate-500 line-clamp-2">${p.description}</p>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[9px]">
+              <span class="text-slate-400">${p.city || 'India'} (${p.mode || 'Hybrid'})</span>
+              <span class="font-extrabold text-electric">View Details →</span>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const savedList = window.Aleropath.getSavedOpportunities();
+
+      grid.innerHTML = visible.map((o, i) => {
+        const isSaved = savedList.includes(o.id);
+        const metaItems = [
+          ["location_on", `${o.city || "India"} · ${o.mode || "Hybrid"}`],
+          ["calendar_month", o.date || "Upcoming"],
+          ["payments", o.budget_inr ? `₹${o.budget_inr.toLocaleString('en-IN')}` : "Free / Collaborative"]
+        ];
+
+        return `
+        <article class="card fade-up overflow-hidden rounded-[24px] p-5 sm:p-6" style="animation-delay:${i * 40}ms">
+          <div class="flex gap-4">
+            <div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg shadow-blue-900/10">
+              <span class="material-symbols-outlined text-[20px]">${typeIcon(o.category, o.type)}</span>
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="type-pill rounded-full border ${typeClasses(o.category, o.type)} px-2.5 py-1 text-[8px] font-extrabold">${(o.category || "PROJECT").toUpperCase()}</span>
+                  <span class="text-[9px] font-semibold text-slate-400">${o.organization || "Aleropath Ecosystem"} · ${o.freshness || "Active"}</span>
+                </div>
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1.5 text-[9px] font-extrabold text-emerald-700">
+                  <span class="material-symbols-outlined text-[13px]">auto_awesome</span>
+                  ${o.score}% fit
+                </div>
+              </div>
+
+              <h3 class="mt-3 text-base font-extrabold tracking-tight text-navy sm:text-lg">${o.title}</h3>
+              <p class="mt-2 text-xs leading-5 text-slate-500">${o.description}</p>
+
+              <div class="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                ${metaItems.map(([icon, text]) => `
+                  <span class="inline-flex items-center gap-1.5 text-[9px] font-semibold text-slate-400">
+                    <span class="material-symbols-outlined text-[14px]">${icon}</span>${text}
+                  </span>
+                `).join("")}
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                ${(o.tags || o.skills || []).map(t => `<span class="tag rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[9px] font-bold text-slate-500">${t}</span>`).join("")}
+              </div>
+
+              <div class="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="grid h-7 w-7 place-items-center rounded-lg bg-blue-50 text-electric">
+                    <span class="material-symbols-outlined text-[15px]">smart_toy</span>
+                  </span>
+                  <span class="text-[9px] font-semibold text-slate-400">Deterministic signal fit · ${o.source || "Ecosystem"}</span>
+                </div>
+                <div class="flex gap-2">
+                  <button class="details-btn rounded-xl border border-slate-200 px-3.5 py-2.5 text-[10px] font-extrabold text-navy transition hover:border-blue-200 hover:bg-blue-50 hover:text-electric" data-id="${o.id}">
+                    View details
+                  </button>
+                  <button class="interest-btn rounded-xl ${isSaved ? 'bg-emerald-600' : 'bg-navy'} px-3.5 py-2.5 text-[10px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-glow" data-id="${o.id}">
+                    ${isSaved ? 'Saved ✓' : (o.type === 'mentor' ? 'Book session' : o.type === 'event' ? 'Save event' : 'Interested')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      `}).join("");
+
+      bindFeedActions();
+    }
+
+    function bindFeedActions() {
+      document.querySelectorAll(".details-btn").forEach(btn => btn.addEventListener("click", () => openDetails(btn.dataset.id)));
+      document.querySelectorAll(".interest-btn").forEach(btn => btn.addEventListener("click", () => {
+        const item = allOpportunities.find(x => x.id === btn.dataset.id);
+        if (!item) return;
+
+        window.Aleropath.saveOpportunity(item.id, item.title);
+        btn.textContent = "Saved ✓";
+        btn.className = "interest-btn rounded-xl bg-emerald-600 px-3.5 py-2.5 text-[10px] font-extrabold text-white transition";
+        window.Aleropath.showToast(`Saved “${item.title}” to your opportunities!`);
+      }));
+    }
+
+    function openDetails(id) {
+      const o = allOpportunities.find(x => x.id === id);
+      if (!o) return;
+
+      document.getElementById("modalContent").innerHTML = `
+        <div class="pr-8">
+          <div class="flex items-start gap-3">
+            <div class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg">
+              <span class="material-symbols-outlined text-[24px]">${typeIcon(o.category, o.type)}</span>
+            </div>
+            <div>
+              <span class="rounded-full border ${typeClasses(o.category, o.type)} px-2.5 py-1 text-[8px] font-extrabold tracking-[.13em]">${(o.category || o.type).toUpperCase()}</span>
+              <h2 class="mt-2 text-xl font-extrabold tracking-tight text-navy">${o.title}</h2>
+              <p class="mt-1 text-xs text-slate-400">${o.organization || "Aleropath Ecosystem"} · ${o.city || "India"}</p>
+            </div>
+          </div>
+
+          <div class="mt-7 rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
+            <div class="flex items-start gap-2.5">
+              <span class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white text-electric shadow-sm">
+                <span class="material-symbols-outlined text-[17px]">psychology</span>
+              </span>
+              <div>
+                <div class="flex items-center justify-between">
+                  <p class="text-[9px] font-extrabold uppercase tracking-[.14em] text-blue-600">AI Match Fit: ${o.score}%</p>
+                </div>
+                <p class="mt-2 text-xs leading-5 text-slate-700">${o.matchReason}</p>
+                <p class="mt-2 text-xs font-semibold text-slate-500"><strong class="text-navy">Why now:</strong> ${o.whyNow}</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-6 text-sm leading-7 text-slate-600">${o.description}</p>
+
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <span class="material-symbols-outlined text-[18px] text-electric">location_on</span>
+              <p class="mt-2 text-[10px] font-bold text-slate-500">${o.city || "India"} (${o.mode || "Hybrid"})</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <span class="material-symbols-outlined text-[18px] text-electric">calendar_month</span>
+              <p class="mt-2 text-[10px] font-bold text-slate-500">${o.date || "Upcoming"}</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+              <span class="material-symbols-outlined text-[18px] text-electric">payments</span>
+              <p class="mt-2 text-[10px] font-bold text-slate-500">${o.budget_inr ? '₹' + o.budget_inr.toLocaleString('en-IN') : 'Free / Open'}</p>
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            ${(o.tags || o.skills || []).map(t => `<span class="rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[10px] font-bold text-blue-700">${t}</span>`).join("")}
+          </div>
+
+          <div class="mt-7 flex gap-2">
+            <button id="modalAction" class="flex-1 rounded-xl bg-navy px-4 py-3 text-xs font-extrabold text-white transition hover:bg-electric">
+              Save Opportunity
+            </button>
+            <button id="modalCloseSecondary" class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-extrabold text-slate-600 hover:bg-slate-50">Close</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("detailsModal").classList.remove("hidden");
+      document.getElementById("detailsModal").classList.add("flex");
+
+      document.getElementById("modalAction").addEventListener("click", () => {
+        window.Aleropath.saveOpportunity(o.id, o.title);
+        window.Aleropath.showToast(`Saved “${o.title}” to your opportunities!`);
+        closeModal();
+        renderFeed(currentFilter);
+      });
+      document.getElementById("modalCloseSecondary").addEventListener("click", closeModal);
+    }
+
+    function closeModal() {
+      document.getElementById("detailsModal").classList.add("hidden");
+      document.getElementById("detailsModal").classList.remove("flex");
+    }
+
+    /**
+     * AI Auto-tagging & Review Flow
+     */
+    async function structureOpportunity() {
+      const input = document.getElementById("opportunityInput");
+      const btn = document.getElementById("structureBtn");
+      const text = input.value.trim();
+
+      if (!text) {
+        input.focus();
+        window.Aleropath.showToast("Please paste opportunity text first.", "info");
+        return;
+      }
+
+      btn.disabled = true;
+      document.getElementById("structureText").textContent = "Structuring with AI...";
+      document.getElementById("structureIcon").textContent = "progress_activity";
+      document.getElementById("previewEmpty").classList.add("hidden");
+      document.getElementById("previewStatus").textContent = "ANALYZING";
+      document.getElementById("previewStatus").className = "rounded-full bg-blue-50 px-2.5 py-1.5 text-[9px] font-extrabold text-electric";
+
+      const output = document.getElementById("previewOutput");
+      output.classList.remove("hidden");
+      output.innerHTML = `
+        <div class="grid gap-3">
+          ${Array.from({length: 4}, () => `<div class="loading-shimmer h-10 rounded-xl"></div>`).join("")}
+        </div>
+      `;
+
+      try {
+        const structured = await window.Aleropath.structureOpportunityWithAI(text);
+        lastExtractedData = structured;
+
+        document.getElementById("previewStatus").textContent = "REVIEW & EDIT";
+        document.getElementById("previewStatus").className = "rounded-full bg-emerald-50 px-2.5 py-1.5 text-[9px] font-extrabold text-emerald-700";
+
+        // Render editable review form
+        output.innerHTML = `
+          <div class="space-y-3.5 fade-up">
+            <div class="rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] font-extrabold uppercase tracking-[.14em] text-blue-700">AI Structured — Review & Edit</span>
+                <span class="rounded-full bg-white px-2 py-0.5 text-[8px] font-bold text-emerald-700">Ready</span>
+              </div>
+              <label class="mt-2 block">
+                <span class="text-[10px] font-bold text-navy">Title</span>
+                <input id="editTitle" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs font-bold text-navy" value="${structured.title}" />
+              </label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <label>
+                <span class="text-[9px] font-bold text-slate-500">Category</span>
+                <select id="editCategory" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs font-bold text-navy">
+                  <option ${structured.category === 'Project' ? 'selected' : ''}>Project</option>
+                  <option ${structured.category === 'Event' ? 'selected' : ''}>Event</option>
+                  <option ${structured.category === 'Competition' ? 'selected' : ''}>Competition</option>
+                  <option ${structured.category === 'Workshop' ? 'selected' : ''}>Workshop</option>
+                  <option ${structured.category === 'Mentor' ? 'selected' : ''}>Mentor</option>
+                  <option ${structured.category === 'Community' ? 'selected' : ''}>Community</option>
+                </select>
+              </label>
+              <label>
+                <span class="text-[9px] font-bold text-slate-500">City / Region</span>
+                <input id="editLocation" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs font-bold text-navy" value="${structured.location || 'Bengaluru'}" />
+              </label>
+              <label>
+                <span class="text-[9px] font-bold text-slate-500">Date</span>
+                <input id="editDate" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs font-bold text-navy" value="${structured.date || 'Upcoming'}" />
+              </label>
+              <label>
+                <span class="text-[9px] font-bold text-slate-500">Budget / Prize (INR)</span>
+                <input id="editBudget" type="number" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs font-bold text-navy" value="${structured.budget_inr || 0}" />
+              </label>
+            </div>
+
+            <label class="block">
+              <span class="text-[9px] font-bold text-slate-500">Extracted Skills (comma-separated)</span>
+              <input id="editSkills" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs text-navy" value="${(structured.skills || []).join(', ')}" />
+            </label>
+
+            <label class="block">
+              <span class="text-[9px] font-bold text-slate-500">Tags (comma-separated)</span>
+              <input id="editTags" class="mt-1 w-full rounded-lg border border-slate-200 bg-white p-2 text-xs text-navy" value="${(structured.tags || []).join(', ')}" />
+            </label>
+
+            <button id="publishStructured" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-navy py-3 text-xs font-extrabold text-white transition hover:bg-electric shadow-lg shadow-blue-900/10">
+              <span class="material-symbols-outlined text-[17px]">publish</span>
+              Publish to live ecosystem
+            </button>
+          </div>
+        `;
+
+        document.getElementById("publishStructured").addEventListener("click", () => {
+          const editedSkills = document.getElementById("editSkills").value.split(",").map(s => s.trim()).filter(Boolean);
+          const editedTags = document.getElementById("editTags").value.split(",").map(s => s.trim()).filter(Boolean);
+          const cat = document.getElementById("editCategory").value;
+
+          const toPublish = {
+            ...structured,
+            title: document.getElementById("editTitle").value.trim() || structured.title,
+            category: cat,
+            type: (cat === "Event" || cat === "Competition" || cat === "Workshop" || cat === "Community") ? "event" : (cat === "Mentor" ? "mentor" : "project"),
+            city: document.getElementById("editLocation").value.trim() || structured.location,
+            date: document.getElementById("editDate").value.trim() || structured.date,
+            budget_inr: parseInt(document.getElementById("editBudget").value, 10) || 0,
+            skills: editedSkills.length ? editedSkills : structured.skills,
+            tags: editedTags.length ? editedTags : structured.tags,
+            description: text
+          };
+
+          const published = window.Aleropath.publishOpportunity(toPublish);
+          window.Aleropath.showToast(`Published “${published.title}” to the ecosystem!`);
+
+          // Reset composer & reload feed
+          input.value = "";
+          document.getElementById("previewStatus").textContent = "PUBLISHED ✓";
+          document.getElementById("previewStatus").className = "rounded-full bg-emerald-50 px-2.5 py-1.5 text-[9px] font-extrabold text-emerald-700";
+          output.innerHTML = `
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 text-center fade-up">
+              <span class="material-symbols-outlined text-3xl text-emerald-600">check_circle</span>
+              <h3 class="mt-2 text-sm font-extrabold text-navy">Opportunity Live in Graph</h3>
+              <p class="mt-1 text-xs text-slate-500">“${published.title}” is now participating in real-time match rankings.</p>
+              <a href="AiMatch.html" class="mt-4 inline-flex items-center gap-1 text-xs font-extrabold text-electric hover:underline">
+                View AI Matches →
+              </a>
+            </div>
+          `;
+
+          loadFeed();
+        });
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("previewStatus").textContent = "ERROR";
+        output.innerHTML = `<p class="text-xs text-red-500">Failed to structure opportunity: ${err.message}</p>`;
+      } finally {
+        btn.disabled = false;
+        document.getElementById("structureText").textContent = "Structure with AI";
+        document.getElementById("structureIcon").textContent = "auto_awesome";
+      }
+    }
+
+    // Filter clicks
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => {
+          t.classList.remove("active");
+          t.classList.add("text-slate-500");
+        });
+        tab.classList.add("active");
+        tab.classList.remove("text-slate-500");
+        currentFilter = tab.dataset.filter;
+        renderFeed(currentFilter);
+      });
+    });
+
+    // Sample buttons
+    document.querySelectorAll(".sample-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const text = samples[btn.dataset.sample];
+        document.getElementById("opportunityInput").value = text;
+        document.getElementById("opportunityInput").focus();
+        window.Aleropath.showToast("Sample loaded — click 'Structure with AI'.", "auto_awesome");
+      });
+    });
+
+    // Drop affordance
+    const dropZone = document.getElementById("dropZone");
+    ["dragenter", "dragover"].forEach(ev => dropZone.addEventListener(ev, e => {
+      e.preventDefault();
+      dropZone.classList.add("drop-active");
+    }));
+    ["dragleave", "drop"].forEach(ev => dropZone.addEventListener(ev, e => {
+      e.preventDefault();
+      dropZone.classList.remove("drop-active");
+    }));
+    dropZone.addEventListener("drop", e => {
+      const text = e.dataTransfer.getData("text");
+      if (text) {
+        document.getElementById("opportunityInput").value = text;
+        window.Aleropath.showToast("Opportunity text dropped in.");
+      }
+    });
+
+    document.getElementById("structureBtn").addEventListener("click", structureOpportunity);
+    document.getElementById("mobileNav").addEventListener("click", () => document.getElementById("mobileMenu").classList.toggle("hidden"));
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    document.getElementById("modalBackdrop").addEventListener("click", closeModal);
+
+    loadFeed();
+  </script>
+</body>
+</html>

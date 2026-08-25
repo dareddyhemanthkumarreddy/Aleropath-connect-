@@ -1,0 +1,7 @@
+{
+  "name": "Aleropath Connect",
+  "description": "AI-powered opportunity intelligence and matching platform for student communities, projects, and events.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

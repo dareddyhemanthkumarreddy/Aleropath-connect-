@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07142f" />
+  <title>Aleropath Connect — Intelligence Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07142f",
+            navy: "#0b1f3a",
+            electric: "#2f6df6",
+            mist: "#f6f9ff",
+            line: "#dce5f4"
+          },
+          boxShadow: {
+            soft: "0 18px 55px rgba(7,20,47,.08)",
+            glow: "0 18px 60px rgba(47,109,246,.18)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 90% 4%, rgba(47,109,246,.10), transparent 26rem),
+        radial-gradient(circle at 4% 45%, rgba(98,139,232,.08), transparent 24rem),
+        #f8faff;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(11,31,58,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,31,58,.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+    }
+    .card {
+      background: rgba(255,255,255,.9);
+      border: 1px solid #e1e8f3;
+      box-shadow: 0 12px 38px rgba(7,20,47,.045);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .card:hover {
+      border-color: #bfd2f2;
+      box-shadow: 0 20px 50px rgba(7,20,47,.08);
+    }
+    .score-ring {
+      background: conic-gradient(#2f6df6 var(--score), #e7eef8 0);
+    }
+    .score-ring::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 999px;
+      background: white;
+    }
+    .pulse-dot { animation: pulse 1.8s infinite; }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(47,109,246,.22); }
+      50% { box-shadow: 0 0 0 8px rgba(47,109,246,0); }
+    }
+    .fade-up { animation: fadeUp .4s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-ink antialiased">
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="grid-bg absolute inset-0"></div>
+    <div class="absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-blue-400/10 blur-3xl"></div>
+    <div class="absolute -left-40 top-[45%] h-[28rem] w-[28rem] rounded-full bg-indigo-300/10 blur-3xl"></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+    <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+      <a href="LandingScreen.html" class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg shadow-blue-900/10">
+          <span class="material-symbols-outlined text-[21px]">hub</span>
+        </span>
+        <span>
+          <span class="block text-[15px] font-extrabold tracking-tight text-navy">Aleropath</span>
+          <span class="block text-[10px] font-bold tracking-[.2em] text-slate-400">CONNECT</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 md:flex">
+        <a href="LandingScreen.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Home</a>
+        <a href="AiMatch.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl bg-navy px-4 py-2 text-xs font-bold text-white shadow-sm">Dashboard</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-xl border border-slate-200 bg-slate-100 p-1 text-[11px] font-extrabold">
+          <button id="modeBuilderBtn" class="rounded-lg bg-navy px-3 py-1.5 text-white shadow-sm transition">Builder View</button>
+          <button id="modeOrganizerBtn" class="rounded-lg px-3 py-1.5 text-slate-500 hover:text-navy transition">Organizer Portal</button>
+        </div>
+        <a href="ProfileCreation.html" class="hidden rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-600 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-electric sm:inline-flex">
+          Edit profile
+        </a>
+        <button id="resetDemoBtn" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold text-slate-500 hover:bg-slate-100 hover:text-navy">
+          Reset Demo
+        </button>
+        <button id="mobileNav" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-navy md:hidden">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-5 py-3 md:hidden">
+      <div class="grid gap-1">
+        <a href="LandingScreen.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Home</a>
+        <a href="AiMatch.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl bg-blue-50 px-3 py-2.5 text-xs font-bold text-electric">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-12">
+    <!-- USER PROFILE HERO -->
+    <section class="card rounded-[28px] p-6 sm:p-8">
+      <div class="grid gap-6 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+        <div id="userAvatar" class="grid h-20 w-20 place-items-center rounded-3xl bg-gradient-to-br from-navy to-electric text-2xl font-extrabold text-white shadow-xl shadow-blue-900/15">
+          AM
+        </div>
+
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 id="userName" class="text-2xl font-extrabold tracking-tight text-navy sm:text-3xl">Aarav Mehta</h1>
+            <span class="material-symbols-outlined text-blue-500 text-[18px]">verified</span>
+            <span id="userRoleBadge" class="rounded-full bg-blue-50 px-2.5 py-1 text-[9px] font-extrabold text-blue-700 uppercase tracking-wider">Builder</span>
+            <!-- Karma Badge -->
+            <span id="karmaTierBadge" class="rounded-full bg-amber-50 px-2.5 py-1 text-[9px] font-extrabold text-amber-700 uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">military_tech</span>
+              Top 5% Builder
+            </span>
+          </div>
+
+          <p id="userMeta" class="mt-1 text-xs font-semibold text-slate-400">Computer Science · Demo Institute of Technology · Bengaluru, India</p>
+
+          <p id="userGoal" class="mt-3 text-xs leading-5 text-slate-600">
+            <strong class="text-navy">Current Goal:</strong> Build an AI-powered education project before December and find a frontend teammate.
+          </p>
+
+          <div id="userChips" class="mt-4 flex flex-wrap gap-1.5"></div>
+          
+          <!-- Phase 3 Badges List -->
+          <div id="karmaBadgesList" class="mt-3 flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <div class="flex flex-col items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 lg:w-56">
+          <div class="flex w-full items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Completeness</span>
+            <span id="completenessScore" class="text-xs font-extrabold text-electric">85%</span>
+          </div>
+          <div class="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+            <div id="completenessBar" class="h-full rounded-full bg-electric" style="width: 85%"></div>
+          </div>
+
+          <div class="w-full pt-2 border-t border-slate-200/60 flex items-center justify-between">
+            <div>
+              <p class="text-[9px] font-extrabold uppercase tracking-wider text-amber-600">Karma Score</p>
+              <p id="karmaScoreText" class="text-base font-extrabold text-navy">870 / 1000</p>
+            </div>
+            <span class="material-symbols-outlined text-amber-500 text-[20px]">workspace_premium</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY STATS -->
+    <section class="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div class="card rounded-2xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Top Match</span>
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-blue-50 text-electric">
+            <span class="material-symbols-outlined text-[17px]">stars</span>
+          </span>
+        </div>
+        <p class="mt-3 text-3xl font-extrabold text-navy" id="topMatchStat">98%</p>
+        <p class="mt-1 text-[10px] text-slate-400">Signal alignment fit</p>
+      </div>
+
+      <div class="card rounded-2xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Active Matches</span>
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-indigo-50 text-indigo-600">
+            <span class="material-symbols-outlined text-[17px]">hub</span>
+          </span>
+        </div>
+        <p class="mt-3 text-3xl font-extrabold text-navy" id="matchesStat">18</p>
+        <p class="mt-1 text-[10px] text-slate-400">Personalized in graph</p>
+      </div>
+
+      <div class="card rounded-2xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Saved Items</span>
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-cyan-50 text-cyan-600">
+            <span class="material-symbols-outlined text-[17px]">bookmark</span>
+          </span>
+        </div>
+        <p class="mt-3 text-3xl font-extrabold text-navy" id="savedStat">0</p>
+        <p class="mt-1 text-[10px] text-slate-400">Bookmarked opportunities</p>
+      </div>
+
+      <div class="card rounded-2xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Connections</span>
+          <span class="grid h-8 w-8 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="material-symbols-outlined text-[17px]">handshake</span>
+          </span>
+        </div>
+        <p class="mt-3 text-3xl font-extrabold text-navy" id="connectionsStat">0</p>
+        <p class="mt-1 text-[10px] text-slate-400">Ecosystem peers reached</p>
+      </div>
+    </section>
+
+    <!-- CONTENT GRID -->
+    <div class="mt-8 grid gap-8 lg:grid-cols-[1.2fr_.8fr]">
+      <!-- TOP MATCHES PREVIEW -->
+      <section>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-electric">Curated AI Recommendations</p>
+            <h2 class="mt-1 text-xl font-extrabold tracking-tight text-navy">Top Recommendations</h2>
+          </div>
+          <a href="AiMatch.html" class="text-xs font-extrabold text-electric hover:underline">
+            View all 18 matches →
+          </a>
+        </div>
+
+        <div id="topMatchesList" class="mt-5 space-y-4"></div>
+      </section>
+
+      <!-- SAVED & CONNECTIONS -->
+      <section class="space-y-8">
+        <!-- SAVED OPPORTUNITIES -->
+        <div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-cyan-600">Your Bookmarks</p>
+              <h2 class="mt-1 text-lg font-extrabold tracking-tight text-navy">Saved Opportunities</h2>
+            </div>
+            <a href="OppurtunityFeed.html" class="text-xs font-extrabold text-slate-500 hover:text-navy">
+              Browse feed →
+            </a>
+          </div>
+
+          <div id="savedList" class="mt-4 space-y-3"></div>
+        </div>
+
+        <!-- ACTIVE CONNECTIONS -->
+        <div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-emerald-600">Network</p>
+              <h2 class="mt-1 text-lg font-extrabold tracking-tight text-navy">Active Connections</h2>
+            </div>
+          </div>
+
+          <div id="connectionsList" class="mt-4 space-y-3"></div>
+        </div>
+
+        <!-- RECENT ACTIVITY AUDIT -->
+        <div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">Audit Trail</p>
+              <h2 class="mt-1 text-lg font-extrabold tracking-tight text-navy">Recent Activity</h2>
+            </div>
+          </div>
+
+          <div id="activityList" class="mt-4 space-y-2.5 rounded-2xl border border-slate-200 bg-white p-4"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- PHASE 2: ORGANIZER PORTAL SECTION (HIDDEN BY DEFAULT) -->
+    <div id="organizerPortalSection" class="mt-8 space-y-8 hidden">
+      <!-- ORGANIZER HERO & STATS -->
+      <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="card rounded-2xl p-5 border-l-4 border-l-electric">
+          <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Total Community Members</p>
+          <p class="mt-2 text-3xl font-extrabold text-navy" id="orgMembers">248</p>
+          <p class="mt-1 text-[10px] text-emerald-600 font-bold">↑ 18% growth this month</p>
+        </div>
+
+        <div class="card rounded-2xl p-5 border-l-4 border-l-cyan-500">
+          <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Active Events & Challenges</p>
+          <p class="mt-2 text-3xl font-extrabold text-navy" id="orgEvents">4</p>
+          <p class="mt-1 text-[10px] text-slate-400">Published across ecosystem</p>
+        </div>
+
+        <div class="card rounded-2xl p-5 border-l-4 border-l-emerald-500">
+          <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Total Confirmed RSVPs</p>
+          <p class="mt-2 text-3xl font-extrabold text-navy" id="orgRSVPs">86</p>
+          <p class="mt-1 text-[10px] text-slate-400">Verified builder RSVPs</p>
+        </div>
+
+        <div class="card rounded-2xl p-5 border-l-4 border-l-amber-500 flex flex-col justify-between">
+          <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Community Management</p>
+          <button id="openBroadcastBtn" class="mt-2 rounded-xl bg-electric px-4 py-2.5 text-xs font-extrabold text-white shadow-md hover:bg-blue-700 flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">campaign</span> Broadcast Opportunity
+          </button>
+        </div>
+      </section>
+
+      <!-- SKILL DISTRIBUTION & RECENT RSVPS GRID -->
+      <div class="grid gap-8 lg:grid-cols-[1fr_1fr]">
+        <!-- SKILL DISTRIBUTION -->
+        <div class="card rounded-3xl p-6">
+          <h3 class="text-sm font-extrabold text-navy">Member Skill Distribution</h3>
+          <p class="text-[10px] text-slate-400 mt-0.5">Aggregated technical capabilities of your chapter</p>
+          <div id="skillDistList" class="mt-5 space-y-4"></div>
+        </div>
+
+        <!-- RECENT RSVPS -->
+        <div class="card rounded-3xl p-6">
+          <h3 class="text-sm font-extrabold text-navy">Recent Event Applications & RSVPs</h3>
+          <p class="text-[10px] text-slate-400 mt-0.5">Live attendee activity feed</p>
+          <div id="rsvpList" class="mt-5 space-y-3"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/aleropath-core.js"></script>
+  <script>
+    async function loadDashboard() {
+      const profile = window.Aleropath.getProfile();
+      
+      // Populate user card
+      const initials = (profile.name || "AM").split(/\s+/).filter(Boolean).slice(0,2).map(x => x[0].toUpperCase()).join("") || "AM";
+      document.getElementById("userAvatar").textContent = initials;
+      document.getElementById("userName").textContent = profile.name || "Aarav Mehta";
+      document.getElementById("userRoleBadge").textContent = profile.role || "Builder";
+      document.getElementById("userMeta").textContent = [profile.field, profile.institution, profile.location || profile.city || "India"].filter(Boolean).join(" · ");
+      document.getElementById("userGoal").innerHTML = `<strong class="text-navy">Current Goal:</strong> ${profile.goal || "Build an impactful project."}`;
+
+      const chips = [...(profile.skills || []), ...(profile.interests || [])].slice(0, 8);
+      document.getElementById("userChips").innerHTML = chips.map(c => `<span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold text-slate-600">${c}</span>`).join("");
+
+      // Phase 3 Karma Score & Badges
+      const karma = window.Aleropath.calculateKarmaScore(profile);
+      document.getElementById("karmaScoreText").textContent = `${karma.score} / 1000`;
+      document.getElementById("karmaTierBadge").innerHTML = `<span class="material-symbols-outlined text-[13px]">military_tech</span> ${karma.tier}`;
+      document.getElementById("karmaBadgesList").innerHTML = karma.badges.map(b => `
+        <span class="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50/70 px-2.5 py-0.5 text-[8px] font-bold text-blue-700">
+          <span class="material-symbols-outlined text-[12px] text-electric">${b.icon}</span> ${b.name}
+        </span>
+      `).join("");
+
+      const completeness = window.Aleropath.calculateProfileCompleteness(profile);
+      document.getElementById("completenessScore").textContent = `${completeness}%`;
+      document.getElementById("completenessBar").style.width = `${completeness}%`;
+
+      // Matches
+      const matches = await window.Aleropath.computePersonalizedMatches(profile);
+      document.getElementById("matchesStat").textContent = matches.length;
+      if (matches.length > 0) {
+        document.getElementById("topMatchStat").textContent = `${matches[0].score}%`;
+      }
+
+      // Render top 4 matches
+      const topList = document.getElementById("topMatchesList");
+      topList.innerHTML = matches.slice(0, 4).map(m => `
+        <article class="card rounded-2xl p-5 fade-up">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-navy text-white text-xs font-extrabold">
+                ${m.type === 'person' ? (m.avatar || 'AC') : '<span class="material-symbols-outlined text-[20px]">hub</span>'}
+              </div>
+              <div>
+                <h3 class="text-sm font-extrabold text-navy">${m.title}</h3>
+                <p class="text-[10px] text-slate-400">${m.subtitle}</p>
+              </div>
+            </div>
+            <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-extrabold text-electric">${m.score}% fit</span>
+          </div>
+          <p class="mt-3 text-xs leading-5 text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">${m.reason}</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div class="flex gap-1">
+              ${(m.tags || []).slice(0, 3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[8px] font-bold text-slate-500">${t}</span>`).join("")}
+            </div>
+            <a href="AiMatch.html" class="text-[10px] font-extrabold text-electric hover:underline">View in AI Match →</a>
+          </div>
+        </article>
+      `).join("");
+
+      // Saved opportunities
+      const savedIds = window.Aleropath.getSavedOpportunities();
+      document.getElementById("savedStat").textContent = savedIds.length;
+
+      const rawOpps = await window.Aleropath.getAllOpportunities();
+      const savedOpps = rawOpps.filter(o => savedIds.includes(o.id));
+
+      const savedContainer = document.getElementById("savedList");
+      if (savedOpps.length === 0) {
+        savedContainer.innerHTML = `
+          <div class="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6 text-center">
+            <span class="material-symbols-outlined text-2xl text-slate-300">bookmark_border</span>
+            <p class="mt-2 text-xs font-bold text-slate-500">No saved opportunities yet</p>
+            <a href="OpportunityFeed.html" class="mt-2 inline-block text-[10px] font-extrabold text-electric hover:underline">Explore the Feed →</a>
+          </div>
+        `;
+      } else {
+        savedContainer.innerHTML = savedOpps.map(o => `
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <h4 class="truncate text-xs font-extrabold text-navy">${o.title}</h4>
+              <p class="mt-0.5 text-[10px] text-slate-400">${o.category} · ${o.city || 'India'}</p>
+            </div>
+            <a href="OpportunityFeed.html" class="rounded-xl border border-slate-200 px-3 py-1.5 text-[10px] font-bold text-navy hover:bg-slate-50">View</a>
+          </div>
+        `).join("");
+      }
+
+      // Connections
+      const connections = window.Aleropath.getConnections();
+      document.getElementById("connectionsStat").textContent = connections.length;
+
+      const connectionsContainer = document.getElementById("connectionsList");
+      if (connections.length === 0) {
+        connectionsContainer.innerHTML = `
+          <div class="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6 text-center">
+            <span class="material-symbols-outlined text-2xl text-slate-300">person_add</span>
+            <p class="mt-2 text-xs font-bold text-slate-500">No active connections yet</p>
+            <a href="AiMatch.html" class="mt-2 inline-block text-[10px] font-extrabold text-electric hover:underline">Find Teammates →</a>
+          </div>
+        `;
+      } else {
+        connectionsContainer.innerHTML = connections.map(c => `
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <span class="grid h-8 w-8 place-items-center rounded-xl bg-emerald-50 text-emerald-600 font-extrabold text-xs">✓</span>
+              <div>
+                <h4 class="text-xs font-extrabold text-navy">${c.name || c.title || 'Connected Peer'}</h4>
+                <p class="text-[9px] text-slate-400">${c.type ? (c.type.charAt(0).toUpperCase() + c.type.slice(1)) + ' · ' : ''}Connected ${c.connectedAt ? new Date(c.connectedAt).toLocaleDateString() : 'Recently'}</p>
+              </div>
+            </div>
+            <a href="AiMatch.html?targetId=${c.id}" class="rounded-full bg-emerald-50 px-2.5 py-1 text-[9px] font-extrabold text-emerald-700 hover:bg-electric hover:text-white transition">
+              Open Workspace →
+            </a>
+          </div>
+        `).join("");
+      }
+
+      // Activity log
+      const activities = window.Aleropath.getActivities();
+      const activityContainer = document.getElementById("activityList");
+      if (activities.length === 0) {
+        activityContainer.innerHTML = `<p class="text-[10px] text-slate-400 text-center py-2">No activity recorded yet.</p>`;
+      } else {
+        activityContainer.innerHTML = activities.slice(0, 6).map(a => `
+          <div class="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-electric">${a.icon || 'arrow_right'}</span>
+              <p class="text-[10px] font-semibold text-slate-700">${a.text || a.description || 'Activity recorded'}</p>
+            </div>
+            <span class="text-[8px] text-slate-400">${a.time || (a.timestamp ? new Date(a.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Recently')}</span>
+          </div>
+        `).join("");
+      }
+
+      loadOrganizerData();
+    }
+
+    function loadOrganizerData() {
+      const org = window.Aleropath.getOrganizerAnalytics();
+      document.getElementById("orgMembers").textContent = org.totalMembers;
+      document.getElementById("orgEvents").textContent = org.activeEvents;
+      document.getElementById("orgRSVPs").textContent = org.rsvpsTotal;
+
+      document.getElementById("skillDistList").innerHTML = org.skillDistribution.map(s => `
+        <div>
+          <div class="flex justify-between text-xs font-bold mb-1">
+            <span class="text-navy">${s.skill}</span>
+            <span class="text-electric">${s.percent}% (${s.count} members)</span>
+          </div>
+          <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+            <div class="h-full rounded-full bg-electric" style="width:${s.percent}%"></div>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("rsvpList").innerHTML = org.recentRSVPs.map(r => `
+        <div class="flex items-center justify-between p-3 rounded-2xl border border-slate-100 bg-slate-50/70">
+          <div>
+            <h4 class="text-xs font-extrabold text-navy">${r.name}</h4>
+            <p class="text-[10px] text-slate-400">${r.role} · RSVP for ${r.event}</p>
+          </div>
+          <span class="rounded-full bg-emerald-50 px-2 py-1 text-[9px] font-bold text-emerald-700">${r.status}</span>
+        </div>
+      `).join("");
+    }
+
+    // Mode Switcher Controls
+    const builderBtn = document.getElementById("modeBuilderBtn");
+    const orgBtn = document.getElementById("modeOrganizerBtn");
+    const builderSection1 = document.querySelector("section.mt-6");
+    const builderSection2 = document.querySelector("div.mt-8.grid");
+    const orgSection = document.getElementById("organizerPortalSection");
+
+    orgBtn.addEventListener("click", () => {
+      orgBtn.classList.add("bg-navy", "text-white", "shadow-sm");
+      orgBtn.classList.remove("text-slate-500");
+      builderBtn.classList.remove("bg-navy", "text-white", "shadow-sm");
+      builderBtn.classList.add("text-slate-500");
+
+      if (builderSection1) builderSection1.classList.add("hidden");
+      if (builderSection2) builderSection2.classList.add("hidden");
+      if (orgSection) orgSection.classList.remove("hidden");
+    });
+
+    builderBtn.addEventListener("click", () => {
+      builderBtn.classList.add("bg-navy", "text-white", "shadow-sm");
+      builderBtn.classList.remove("text-slate-500");
+      orgBtn.classList.remove("bg-navy", "text-white", "shadow-sm");
+      orgBtn.classList.add("text-slate-500");
+
+      if (builderSection1) builderSection1.classList.remove("hidden");
+      if (builderSection2) builderSection2.classList.remove("hidden");
+      if (orgSection) orgSection.classList.add("hidden");
+    });
+
+    document.getElementById("resetDemoBtn").addEventListener("click", () => {
+      if (confirm("Reset to default demo data and seed profile?")) {
+        window.Aleropath.resetDemoData();
+        window.Aleropath.showToast("Demo state reset to default India seed graph.");
+        setTimeout(() => loadDashboard(), 400);
+      }
+    });
+
+    document.getElementById("mobileNav").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

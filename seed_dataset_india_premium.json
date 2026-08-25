@@ -1,0 +1,986 @@
+{
+  "schema_version": "2.0",
+  "dataset_name": "Aleropath India Demo Opportunity Graph",
+  "purpose": "Hackathon MVP demo seed data",
+  "demo_notice": "All names, profiles, organizations and opportunities in this file are fictional demo records created for the Aleropath prototype. They are intentionally India-focused and must not be presented as verified real people or live listings.",
+  "locale": "en-IN",
+  "currency": "INR",
+  "last_seeded_at": "2026-08-25",
+  "matching": {
+    "score_range": [
+      60,
+      99
+    ],
+    "weights": {
+      "skills": 0.35,
+      "interests": 0.2,
+      "intent": 0.15,
+      "goal": 0.2,
+      "location": 0.05,
+      "availability": 0.05
+    },
+    "explanation_fields": [
+      "matched_skills",
+      "matched_interests",
+      "intent_fit",
+      "goal_fit",
+      "why_now"
+    ]
+  },
+  "categories": [
+    "Event",
+    "Project",
+    "Mentor",
+    "Teammate",
+    "Competition",
+    "Workshop",
+    "Community"
+  ],
+  "locations": [
+    "Bengaluru",
+    "Mumbai",
+    "Hyderabad",
+    "Pune",
+    "Delhi NCR",
+    "Chennai",
+    "Kochi",
+    "Ahmedabad",
+    "Jaipur",
+    "Kolkata",
+    "Remote"
+  ],
+  "profiles": [
+    {
+      "id": "p001",
+      "name": "Aarav Mehta",
+      "city": "Bengaluru",
+      "institution": "Demo Institute of Technology",
+      "role": "Computer Science Student",
+      "skills": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "UI Design"
+      ],
+      "interests": [
+        "AI",
+        "EdTech",
+        "Developer Communities"
+      ],
+      "intent": "Teammate",
+      "goal": "Build an AI-powered education project before December",
+      "availability": "Weekends",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p002",
+      "name": "Ananya Iyer",
+      "city": "Chennai",
+      "institution": "Demo Engineering College",
+      "role": "Product Design Student",
+      "skills": [
+        "Figma",
+        "UX Research",
+        "Design Systems",
+        "Prototyping"
+      ],
+      "interests": [
+        "FinTech",
+        "Accessibility",
+        "AI"
+      ],
+      "intent": "Project",
+      "goal": "Find a product team where I can own UX research",
+      "availability": "Evenings",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p003",
+      "name": "Vihaan Sharma",
+      "city": "Delhi NCR",
+      "institution": "Demo University",
+      "role": "Full Stack Developer",
+      "skills": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "React"
+      ],
+      "interests": [
+        "AI/ML",
+        "Climate Tech",
+        "Open Source"
+      ],
+      "intent": "Teammate",
+      "goal": "Join a serious technical team for a hackathon",
+      "availability": "Flexible",
+      "experience_level": "Advanced"
+    },
+    {
+      "id": "p004",
+      "name": "Diya Nair",
+      "city": "Kochi",
+      "institution": "Demo Institute of Design",
+      "role": "Visual Designer",
+      "skills": [
+        "Figma",
+        "Illustration",
+        "Branding",
+        "Motion Design"
+      ],
+      "interests": [
+        "Creator Economy",
+        "Climate Tech",
+        "Startups"
+      ],
+      "intent": "Project",
+      "goal": "Contribute design to a mission-driven startup project",
+      "availability": "Weekends",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p005",
+      "name": "Rohan Kulkarni",
+      "city": "Pune",
+      "institution": "Demo Business School",
+      "role": "Entrepreneurship Student",
+      "skills": [
+        "Market Research",
+        "Pitching",
+        "Growth",
+        "Excel"
+      ],
+      "interests": [
+        "Startups",
+        "FinTech",
+        "SaaS"
+      ],
+      "intent": "Mentor",
+      "goal": "Find a mentor for validating my SaaS idea",
+      "availability": "Evenings",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p006",
+      "name": "Ishita Banerjee",
+      "city": "Kolkata",
+      "institution": "Demo University",
+      "role": "Data Science Student",
+      "skills": [
+        "Python",
+        "Pandas",
+        "SQL",
+        "Machine Learning"
+      ],
+      "interests": [
+        "HealthTech",
+        "AI/ML",
+        "Public Impact"
+      ],
+      "intent": "Project",
+      "goal": "Work on a real-world ML project with measurable impact",
+      "availability": "Weekends",
+      "experience_level": "Advanced"
+    },
+    {
+      "id": "p007",
+      "name": "Kabir Singh",
+      "city": "Hyderabad",
+      "institution": "Demo Tech Institute",
+      "role": "Backend Developer",
+      "skills": [
+        "Java",
+        "Spring Boot",
+        "AWS",
+        "PostgreSQL"
+      ],
+      "interests": [
+        "Cloud",
+        "Cybersecurity",
+        "FinTech"
+      ],
+      "intent": "Teammate",
+      "goal": "Meet strong backend and product teammates",
+      "availability": "Weekends",
+      "experience_level": "Advanced"
+    },
+    {
+      "id": "p008",
+      "name": "Meera Joshi",
+      "city": "Mumbai",
+      "institution": "Demo Arts & Technology College",
+      "role": "Community Builder",
+      "skills": [
+        "Community Management",
+        "Content",
+        "Event Planning",
+        "Social Media"
+      ],
+      "interests": [
+        "Developer Communities",
+        "Women in Tech",
+        "Startups"
+      ],
+      "intent": "Event",
+      "goal": "Discover high-quality builder communities in India",
+      "availability": "Flexible",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p009",
+      "name": "Aditya Rao",
+      "city": "Ahmedabad",
+      "institution": "Demo Engineering University",
+      "role": "AI Student",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "NLP",
+        "RAG"
+      ],
+      "interests": [
+        "Generative AI",
+        "Education",
+        "Open Source"
+      ],
+      "intent": "Project",
+      "goal": "Build and ship a useful GenAI prototype",
+      "availability": "Evenings",
+      "experience_level": "Advanced"
+    },
+    {
+      "id": "p010",
+      "name": "Saanvi Patel",
+      "city": "Jaipur",
+      "institution": "Demo Design School",
+      "role": "UX Researcher",
+      "skills": [
+        "User Interviews",
+        "Usability Testing",
+        "Figma",
+        "Research"
+      ],
+      "interests": [
+        "HealthTech",
+        "Accessibility",
+        "Civic Tech"
+      ],
+      "intent": "Mentor",
+      "goal": "Connect with product builders working on social impact",
+      "availability": "Weekends",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p011",
+      "name": "Arjun Verma",
+      "city": "Bengaluru",
+      "institution": "Demo Technology University",
+      "role": "Mobile Developer",
+      "skills": [
+        "Flutter",
+        "Dart",
+        "Firebase",
+        "UI Design"
+      ],
+      "interests": [
+        "Consumer Apps",
+        "FinTech",
+        "AI"
+      ],
+      "intent": "Teammate",
+      "goal": "Find a startup-minded team to build a mobile MVP",
+      "availability": "Flexible",
+      "experience_level": "Intermediate"
+    },
+    {
+      "id": "p012",
+      "name": "Nandini Krishnan",
+      "city": "Hyderabad",
+      "institution": "Demo Research Institute",
+      "role": "Research Student",
+      "skills": [
+        "Research",
+        "Python",
+        "Data Analysis",
+        "Technical Writing"
+      ],
+      "interests": [
+        "Climate Tech",
+        "Public Policy",
+        "AI"
+      ],
+      "intent": "Project",
+      "goal": "Find a research-backed climate project",
+      "availability": "Evenings",
+      "experience_level": "Intermediate"
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "o001",
+      "type": "project",
+      "category": "Project",
+      "title": "AI Study Buddy — MVP Team",
+      "organization": "Aleropath Demo Labs",
+      "city": "Bengaluru",
+      "mode": "Hybrid",
+      "date": "2026-09-20",
+      "description": "Build a lightweight AI study companion for college students. Looking for frontend and product contributors.",
+      "skills": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "UI Design"
+      ],
+      "interests": [
+        "AI",
+        "EdTech"
+      ],
+      "tags": [
+        "AI",
+        "EdTech",
+        "React",
+        "MVP"
+      ],
+      "intent_fit": [
+        "Teammate",
+        "Project"
+      ],
+      "budget_inr": 0,
+      "spots": 3,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o002",
+      "type": "event",
+      "category": "Event",
+      "title": "Bengaluru Builder Night",
+      "organization": "Aleropath Demo Community",
+      "city": "Bengaluru",
+      "mode": "In Person",
+      "date": "2026-09-05",
+      "description": "Small-format evening meetup for students and early builders looking for collaborators and feedback.",
+      "skills": [
+        "Product",
+        "Engineering",
+        "Design"
+      ],
+      "interests": [
+        "Startups",
+        "Developer Communities"
+      ],
+      "tags": [
+        "Networking",
+        "Builders",
+        "Bengaluru"
+      ],
+      "intent_fit": [
+        "Event",
+        "Teammate"
+      ],
+      "budget_inr": 0,
+      "spots": 80,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o003",
+      "type": "mentor",
+      "category": "Mentor",
+      "title": "Product Thinking Office Hours",
+      "organization": "Aleropath Demo Mentors",
+      "city": "Remote",
+      "mode": "Online",
+      "date": "2026-09-08",
+      "description": "Mentor-style office hours covering problem discovery, MVP scope, user interviews and product storytelling.",
+      "skills": [
+        "Product Strategy",
+        "UX Research",
+        "Pitching"
+      ],
+      "interests": [
+        "Startups",
+        "AI"
+      ],
+      "tags": [
+        "Mentorship",
+        "Product",
+        "MVP"
+      ],
+      "intent_fit": [
+        "Mentor",
+        "Project"
+      ],
+      "budget_inr": 0,
+      "spots": 12,
+      "status": "Open",
+      "freshness": "Yesterday"
+    },
+    {
+      "id": "o004",
+      "type": "project",
+      "category": "Project",
+      "title": "Accessible Health App Research Sprint",
+      "organization": "Demo HealthTech Collective",
+      "city": "Pune",
+      "mode": "Remote",
+      "date": "2026-09-15",
+      "description": "A two-week sprint to research accessibility needs and prototype a health information experience.",
+      "skills": [
+        "UX Research",
+        "Figma",
+        "User Interviews",
+        "React"
+      ],
+      "interests": [
+        "HealthTech",
+        "Accessibility"
+      ],
+      "tags": [
+        "HealthTech",
+        "UX",
+        "Accessibility"
+      ],
+      "intent_fit": [
+        "Project",
+        "Teammate"
+      ],
+      "budget_inr": 15000,
+      "spots": 4,
+      "status": "Open",
+      "freshness": "2 days ago"
+    },
+    {
+      "id": "o005",
+      "type": "event",
+      "category": "Competition",
+      "title": "GenAI India Build Challenge",
+      "organization": "Demo Innovation Network",
+      "city": "Remote",
+      "mode": "Online",
+      "date": "2026-09-27",
+      "description": "Prototype a practical GenAI solution and present the workflow, evaluation and product value to a demo jury.",
+      "skills": [
+        "Python",
+        "RAG",
+        "React",
+        "Product"
+      ],
+      "interests": [
+        "Generative AI",
+        "Open Source"
+      ],
+      "tags": [
+        "GenAI",
+        "Hackathon",
+        "RAG",
+        "Build"
+      ],
+      "intent_fit": [
+        "Teammate",
+        "Event",
+        "Project"
+      ],
+      "budget_inr": 50000,
+      "spots": 120,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o006",
+      "type": "project",
+      "category": "Project",
+      "title": "Climate Data Explorer",
+      "organization": "Demo Climate Collective",
+      "city": "Hyderabad",
+      "mode": "Hybrid",
+      "date": "2026-10-01",
+      "description": "Build a data product that turns public climate datasets into understandable local insights.",
+      "skills": [
+        "Python",
+        "Pandas",
+        "Data Analysis",
+        "React"
+      ],
+      "interests": [
+        "Climate Tech",
+        "Public Impact"
+      ],
+      "tags": [
+        "Climate",
+        "Data",
+        "Civic Tech"
+      ],
+      "intent_fit": [
+        "Project",
+        "Teammate"
+      ],
+      "budget_inr": 20000,
+      "spots": 5,
+      "status": "Open",
+      "freshness": "3 days ago"
+    },
+    {
+      "id": "o007",
+      "type": "event",
+      "category": "Workshop",
+      "title": "Design Systems for Fast-Moving Teams",
+      "organization": "Demo Design Circle",
+      "city": "Mumbai",
+      "mode": "In Person",
+      "date": "2026-09-12",
+      "description": "Hands-on workshop on reusable components, UX consistency and design-dev collaboration.",
+      "skills": [
+        "Figma",
+        "Design Systems",
+        "UI Design"
+      ],
+      "interests": [
+        "Product Design",
+        "Startups"
+      ],
+      "tags": [
+        "Design",
+        "Figma",
+        "Workshop"
+      ],
+      "intent_fit": [
+        "Event",
+        "Project"
+      ],
+      "budget_inr": 499,
+      "spots": 45,
+      "status": "Open",
+      "freshness": "Yesterday"
+    },
+    {
+      "id": "o008",
+      "type": "project",
+      "category": "Project",
+      "title": "Open Source Campus Toolkit",
+      "organization": "Demo Open Source India",
+      "city": "Remote",
+      "mode": "Remote",
+      "date": "2026-10-10",
+      "description": "Create reusable tools for student communities: event discovery, contributor onboarding and project matching.",
+      "skills": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "Community Management"
+      ],
+      "interests": [
+        "Open Source",
+        "Developer Communities"
+      ],
+      "tags": [
+        "Open Source",
+        "Students",
+        "Community"
+      ],
+      "intent_fit": [
+        "Teammate",
+        "Project"
+      ],
+      "budget_inr": 10000,
+      "spots": 6,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o009",
+      "type": "mentor",
+      "category": "Mentor",
+      "title": "SaaS Validation Clinic",
+      "organization": "Demo Founder Circle",
+      "city": "Pune",
+      "mode": "Online",
+      "date": "2026-09-18",
+      "description": "Structured feedback session on customer discovery, pricing hypotheses, early traction and pitch clarity.",
+      "skills": [
+        "Market Research",
+        "Growth",
+        "Pitching"
+      ],
+      "interests": [
+        "SaaS",
+        "Startups",
+        "FinTech"
+      ],
+      "tags": [
+        "SaaS",
+        "Founder",
+        "Mentor"
+      ],
+      "intent_fit": [
+        "Mentor",
+        "Project"
+      ],
+      "budget_inr": 0,
+      "spots": 10,
+      "status": "Open",
+      "freshness": "4 days ago"
+    },
+    {
+      "id": "o010",
+      "type": "event",
+      "category": "Community",
+      "title": "Women in Tech Build Circle",
+      "organization": "Demo Community Network",
+      "city": "Chennai",
+      "mode": "Hybrid",
+      "date": "2026-09-22",
+      "description": "A collaborative evening for women builders to share projects, find teammates and exchange practical feedback.",
+      "skills": [
+        "Engineering",
+        "Design",
+        "Product"
+      ],
+      "interests": [
+        "Women in Tech",
+        "Developer Communities",
+        "Startups"
+      ],
+      "tags": [
+        "Community",
+        "Women in Tech",
+        "Networking"
+      ],
+      "intent_fit": [
+        "Event",
+        "Teammate"
+      ],
+      "budget_inr": 0,
+      "spots": 60,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o011",
+      "type": "project",
+      "category": "Project",
+      "title": "NLP for Public Services",
+      "organization": "Demo Civic AI Lab",
+      "city": "Delhi NCR",
+      "mode": "Remote",
+      "date": "2026-10-05",
+      "description": "Experiment with multilingual NLP to make public-service information easier to discover and understand.",
+      "skills": [
+        "Python",
+        "NLP",
+        "RAG",
+        "Technical Writing"
+      ],
+      "interests": [
+        "AI",
+        "Public Impact",
+        "Civic Tech"
+      ],
+      "tags": [
+        "NLP",
+        "Civic Tech",
+        "AI"
+      ],
+      "intent_fit": [
+        "Project",
+        "Teammate"
+      ],
+      "budget_inr": 25000,
+      "spots": 4,
+      "status": "Open",
+      "freshness": "2 days ago"
+    },
+    {
+      "id": "o012",
+      "type": "project",
+      "category": "Project",
+      "title": "FinTech Mobile MVP Sprint",
+      "organization": "Demo FinTech Builders",
+      "city": "Mumbai",
+      "mode": "Hybrid",
+      "date": "2026-09-30",
+      "description": "Prototype a mobile-first personal finance experience with a small product and engineering team.",
+      "skills": [
+        "Flutter",
+        "Dart",
+        "Firebase",
+        "UI Design"
+      ],
+      "interests": [
+        "FinTech",
+        "Consumer Apps"
+      ],
+      "tags": [
+        "Flutter",
+        "FinTech",
+        "Mobile"
+      ],
+      "intent_fit": [
+        "Teammate",
+        "Project"
+      ],
+      "budget_inr": 18000,
+      "spots": 3,
+      "status": "Open",
+      "freshness": "Yesterday"
+    },
+    {
+      "id": "o013",
+      "type": "event",
+      "category": "Workshop",
+      "title": "From Idea to Demo Day",
+      "organization": "Demo Startup Studio",
+      "city": "Delhi NCR",
+      "mode": "Online",
+      "date": "2026-09-14",
+      "description": "A practical workshop on turning a rough idea into a convincing MVP narrative and demo.",
+      "skills": [
+        "Pitching",
+        "Product",
+        "Growth"
+      ],
+      "interests": [
+        "Startups",
+        "Innovation"
+      ],
+      "tags": [
+        "Pitch",
+        "MVP",
+        "Demo Day"
+      ],
+      "intent_fit": [
+        "Event",
+        "Project"
+      ],
+      "budget_inr": 0,
+      "spots": 100,
+      "status": "Open",
+      "freshness": "3 days ago"
+    },
+    {
+      "id": "o014",
+      "type": "project",
+      "category": "Project",
+      "title": "AI for Student Mental Wellness — Research Prototype",
+      "organization": "Demo Student Impact Lab",
+      "city": "Kolkata",
+      "mode": "Remote",
+      "date": "2026-10-12",
+      "description": "Research and prototype a responsible student-support experience with clear privacy and safety boundaries.",
+      "skills": [
+        "Python",
+        "Machine Learning",
+        "Research",
+        "UX Research"
+      ],
+      "interests": [
+        "AI/ML",
+        "HealthTech",
+        "Public Impact"
+      ],
+      "tags": [
+        "Responsible AI",
+        "Research",
+        "Student Impact"
+      ],
+      "intent_fit": [
+        "Project",
+        "Teammate"
+      ],
+      "budget_inr": 30000,
+      "spots": 5,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o015",
+      "type": "event",
+      "category": "Competition",
+      "title": "India Student Product Jam",
+      "organization": "Demo Product Guild",
+      "city": "Jaipur",
+      "mode": "Hybrid",
+      "date": "2026-10-03",
+      "description": "A weekend product jam where student teams validate a problem, prototype a solution and present the result.",
+      "skills": [
+        "Product",
+        "UX Research",
+        "Figma",
+        "Pitching"
+      ],
+      "interests": [
+        "Startups",
+        "Innovation",
+        "Accessibility"
+      ],
+      "tags": [
+        "Product",
+        "Jam",
+        "Students"
+      ],
+      "intent_fit": [
+        "Event",
+        "Teammate",
+        "Project"
+      ],
+      "budget_inr": 25000,
+      "spots": 90,
+      "status": "Open",
+      "freshness": "Today"
+    },
+    {
+      "id": "o016",
+      "type": "project",
+      "category": "Project",
+      "title": "Cloud Security Learning Sprint",
+      "organization": "Demo Cloud Community",
+      "city": "Hyderabad",
+      "mode": "Remote",
+      "date": "2026-10-18",
+      "description": "Build a small secure cloud deployment and document threat modeling, IAM and monitoring decisions.",
+      "skills": [
+        "Java",
+        "AWS",
+        "Cybersecurity",
+        "PostgreSQL"
+      ],
+      "interests": [
+        "Cloud",
+        "Cybersecurity"
+      ],
+      "tags": [
+        "AWS",
+        "Security",
+        "Cloud"
+      ],
+      "intent_fit": [
+        "Project",
+        "Teammate"
+      ],
+      "budget_inr": 12000,
+      "spots": 4,
+      "status": "Open",
+      "freshness": "5 days ago"
+    },
+    {
+      "id": "o017",
+      "type": "mentor",
+      "category": "Mentor",
+      "title": "UX Research Feedback Room",
+      "organization": "Demo Product Research Circle",
+      "city": "Remote",
+      "mode": "Online",
+      "date": "2026-09-19",
+      "description": "Peer-style critique on interview scripts, usability findings and turning research into product decisions.",
+      "skills": [
+        "UX Research",
+        "User Interviews",
+        "Usability Testing"
+      ],
+      "interests": [
+        "Accessibility",
+        "HealthTech",
+        "Product Design"
+      ],
+      "tags": [
+        "UX Research",
+        "Feedback",
+        "Mentor"
+      ],
+      "intent_fit": [
+        "Mentor",
+        "Project"
+      ],
+      "budget_inr": 0,
+      "spots": 8,
+      "status": "Open",
+      "freshness": "Yesterday"
+    },
+    {
+      "id": "o018",
+      "type": "event",
+      "category": "Community",
+      "title": "Kerala Student Builder Connect",
+      "organization": "Demo South India Builders",
+      "city": "Kochi",
+      "mode": "In Person",
+      "date": "2026-09-26",
+      "description": "Local networking and project showcase for students building products, research prototypes and community initiatives.",
+      "skills": [
+        "Product",
+        "Engineering",
+        "Design"
+      ],
+      "interests": [
+        "Startups",
+        "Developer Communities",
+        "Climate Tech"
+      ],
+      "tags": [
+        "Kochi",
+        "Builders",
+        "Networking"
+      ],
+      "intent_fit": [
+        "Event",
+        "Teammate"
+      ],
+      "budget_inr": 0,
+      "spots": 70,
+      "status": "Open",
+      "freshness": "2 days ago"
+    }
+  ],
+  "sample_demo_profiles": [
+    {
+      "profile_id": "p001",
+      "expected_top_matches": [
+        "o001",
+        "o005",
+        "o008",
+        "o002",
+        "o003"
+      ]
+    },
+    {
+      "profile_id": "p006",
+      "expected_top_matches": [
+        "o014",
+        "o006",
+        "o011",
+        "o004",
+        "o005"
+      ]
+    },
+    {
+      "profile_id": "p009",
+      "expected_top_matches": [
+        "o005",
+        "o011",
+        "o008",
+        "o001",
+        "o014"
+      ]
+    },
+    {
+      "profile_id": "p011",
+      "expected_top_matches": [
+        "o012",
+        "o001",
+        "o008",
+        "o005",
+        "o002"
+      ]
+    }
+  ],
+  "demo_metrics": {
+    "profiles": 12,
+    "opportunities": 18,
+    "events": 7,
+    "projects": 8,
+    "mentors": 3,
+    "cities": 10,
+    "tags": 42
+  }
+}

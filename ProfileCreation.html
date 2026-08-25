@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07142f" />
+  <title>Create Your Profile — Aleropath Connect</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07142f",
+            navy: "#0b1f3a",
+            electric: "#2f6df6",
+            mist: "#f5f8ff",
+            line: "#dce5f4"
+          },
+          boxShadow: {
+            soft: "0 18px 55px rgba(7,20,47,.08)",
+            glow: "0 18px 60px rgba(47,109,246,.18)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 88% 7%, rgba(47,109,246,.10), transparent 28rem),
+        radial-gradient(circle at 4% 42%, rgba(121,168,255,.08), transparent 25rem),
+        #f8faff;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(11,31,58,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,31,58,.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+    .glass {
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .gradient-text {
+      background: linear-gradient(110deg, #07142f 10%, #194cae 55%, #2f6df6 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .input {
+      width: 100%;
+      border: 1px solid #dce5f4;
+      background: rgba(255,255,255,.92);
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-size: 13px;
+      color: #07142f;
+      outline: none;
+      transition: .2s ease;
+    }
+    .input::placeholder { color: #9aa7b8; }
+    .input:hover { border-color: #b8c8e0; }
+    .input:focus {
+      border-color: #2f6df6;
+      box-shadow: 0 0 0 4px rgba(47,109,246,.10);
+    }
+    textarea.input { resize: vertical; min-height: 108px; }
+    .choice {
+      border: 1px solid #dce5f4;
+      background: white;
+      border-radius: 14px;
+      padding: 12px 13px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .choice:hover { border-color: #9cb8ed; transform: translateY(-1px); }
+    .choice.selected {
+      border-color: #2f6df6;
+      background: #eff5ff;
+      box-shadow: 0 0 0 3px rgba(47,109,246,.07);
+    }
+    .chip {
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid #dce5f4;
+      background: white;
+      transition: .18s ease;
+    }
+    .chip:hover { border-color: #9cb8ed; transform: translateY(-1px); }
+    .chip.selected {
+      color: #1748a6;
+      border-color: #7da5ef;
+      background: #eff5ff;
+    }
+    .step-dot {
+      transition: .25s ease;
+    }
+    .step-dot.active {
+      background: #2f6df6;
+      color: white;
+      box-shadow: 0 0 0 5px rgba(47,109,246,.10);
+    }
+    .step-dot.done {
+      background: #0b1f3a;
+      color: white;
+    }
+    .section-card {
+      border: 1px solid #e1e8f3;
+      background: rgba(255,255,255,.82);
+      border-radius: 24px;
+      box-shadow: 0 12px 42px rgba(7,20,47,.045);
+    }
+    .progress-fill { transition: width .35s ease; }
+  </style>
+</head>
+
+<body class="min-h-screen text-ink antialiased">
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="grid-bg absolute inset-0"></div>
+    <div class="absolute -right-32 -top-40 h-[32rem] w-[32rem] rounded-full bg-blue-400/10 blur-3xl"></div>
+    <div class="absolute -left-32 top-[45%] h-[26rem] w-[26rem] rounded-full bg-indigo-300/10 blur-3xl"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+    <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+      <a href="LandingScreen.html" class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg shadow-blue-900/10">
+          <span class="material-symbols-outlined text-[21px]">hub</span>
+        </span>
+        <span>
+          <span class="block text-[15px] font-extrabold tracking-tight text-navy">Aleropath</span>
+          <span class="block text-[10px] font-bold tracking-[.2em] text-slate-400">CONNECT</span>
+        </span>
+      </a>
+
+      <div class="hidden items-center gap-3 sm:flex">
+        <span class="grid h-8 w-8 place-items-center rounded-full bg-blue-50 text-electric">
+          <span class="material-symbols-outlined text-[17px]">lock</span>
+        </span>
+        <div>
+          <p class="text-[11px] font-bold text-navy">Your profile stays yours</p>
+          <p class="text-[10px] text-slate-400">Used to personalize your matches</p>
+        </div>
+      </div>
+
+      <a href="LandingScreen.html" class="flex items-center gap-1 rounded-xl px-3 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-100 hover:text-navy">
+        <span class="material-symbols-outlined text-[17px]">close</span>
+        Exit
+      </a>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-12">
+    <!-- Intro -->
+    <div class="mx-auto max-w-3xl text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[.14em] text-blue-700 shadow-sm">
+        <span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+        Build your match profile
+      </div>
+      <h1 class="mt-5 text-4xl font-extrabold tracking-[-.04em] text-navy sm:text-5xl">
+        Tell us what makes <span class="gradient-text">you, you.</span>
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+        A better profile gives our matching engine better context. We use your skills, interests,
+        intent, availability, experience level and current goal to surface opportunities that actually fit.
+      </p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="mx-auto mt-10 max-w-4xl">
+      <div class="flex items-center">
+        <div class="flex items-center gap-2">
+          <span id="dot1" class="step-dot active grid h-9 w-9 place-items-center rounded-full bg-electric text-xs font-extrabold text-white">1</span>
+          <span class="hidden text-xs font-bold text-navy sm:block">Identity</span>
+        </div>
+        <div class="mx-3 h-px flex-1 bg-slate-200 sm:mx-5"><div id="bar1" class="progress-fill h-full w-0 bg-electric"></div></div>
+        <div class="flex items-center gap-2">
+          <span id="dot2" class="step-dot grid h-9 w-9 place-items-center rounded-full bg-slate-100 text-xs font-extrabold text-slate-400">2</span>
+          <span class="hidden text-xs font-bold text-slate-400 sm:block">Interests</span>
+        </div>
+        <div class="mx-3 h-px flex-1 bg-slate-200 sm:mx-5"><div id="bar2" class="progress-fill h-full w-0 bg-electric"></div></div>
+        <div class="flex items-center gap-2">
+          <span id="dot3" class="step-dot grid h-9 w-9 place-items-center rounded-full bg-slate-100 text-xs font-extrabold text-slate-400">3</span>
+          <span class="hidden text-xs font-bold text-slate-400 sm:block">Intent</span>
+        </div>
+        <div class="mx-3 h-px flex-1 bg-slate-200 sm:mx-5"><div id="bar3" class="progress-fill h-full w-0 bg-electric"></div></div>
+        <div class="flex items-center gap-2">
+          <span id="dot4" class="step-dot grid h-9 w-9 place-items-center rounded-full bg-slate-100 text-xs font-extrabold text-slate-400">4</span>
+          <span class="hidden text-xs font-bold text-slate-400 sm:block">Finish</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_310px]">
+      <!-- Form -->
+      <section class="section-card overflow-hidden">
+        <form id="profileForm" novalidate onsubmit="return false;">
+          <!-- STEP 1 -->
+          <div class="form-step p-6 sm:p-9" data-step="1">
+            <div class="mb-8">
+              <span class="text-[10px] font-extrabold uppercase tracking-[.18em] text-electric">01 · Identity</span>
+              <h2 class="mt-2 text-2xl font-extrabold tracking-tight text-navy">Start with the basics</h2>
+              <p class="mt-2 text-xs leading-5 text-slate-500">Enough context to understand who you are — without making you fill out a boring résumé.</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">Full name <span class="text-electric">*</span></span>
+                <input id="name" name="name" class="input" required placeholder="e.g. Aarav Mehta" />
+              </label>
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">Email <span class="text-electric">*</span></span>
+                <input id="email" name="email" type="email" class="input" required placeholder="aarav@example.com" />
+              </label>
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">College / institution</span>
+                <input id="institution" name="institution" class="input" placeholder="e.g. Demo Institute of Technology" />
+              </label>
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">Field of study / Major</span>
+                <input id="field" name="field" class="input" placeholder="e.g. Computer Science" />
+              </label>
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">Experience level</span>
+                <select id="experience_level" name="experience_level" class="input">
+                  <option value="Beginner">Beginner (1st year / Explorer)</option>
+                  <option value="Intermediate" selected>Intermediate (2nd - 3rd year / Builder)</option>
+                  <option value="Advanced">Advanced (4th year / Experienced)</option>
+                </select>
+              </label>
+              <label>
+                <span class="mb-2 block text-xs font-bold text-navy">City / region (India / Remote)</span>
+                <input id="location" name="location" class="input" placeholder="e.g. Bengaluru, India" />
+              </label>
+            </div>
+
+            <div class="mt-7">
+              <p class="mb-3 text-xs font-bold text-navy">I see myself mainly as…</p>
+              <div class="grid gap-3 sm:grid-cols-3">
+                <button type="button" class="choice role-choice text-left" data-value="Builder">
+                  <span class="material-symbols-outlined text-[20px] text-electric">code</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Builder</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I like making things.</span>
+                </button>
+                <button type="button" class="choice role-choice text-left" data-value="Explorer">
+                  <span class="material-symbols-outlined text-[20px] text-electric">explore</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Explorer</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I want to learn & discover.</span>
+                </button>
+                <button type="button" class="choice role-choice text-left" data-value="Connector">
+                  <span class="material-symbols-outlined text-[20px] text-electric">groups</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Connector</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I love people & collaboration.</span>
+                </button>
+              </div>
+              <input type="hidden" id="role" name="role" value="Builder" />
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="form-step hidden p-6 sm:p-9" data-step="2">
+            <div class="mb-8">
+              <span class="text-[10px] font-extrabold uppercase tracking-[.18em] text-electric">02 · Interests & skills</span>
+              <h2 class="mt-2 text-2xl font-extrabold tracking-tight text-navy">What can you bring?</h2>
+              <p class="mt-2 text-xs leading-5 text-slate-500">Select everything that genuinely represents you. These are key signals for the 35% skills & 20% interests matching weights.</p>
+            </div>
+
+            <div>
+              <div class="flex items-end justify-between gap-3">
+                <div>
+                  <p class="text-xs font-bold text-navy">Skills <span class="text-electric">*</span></p>
+                  <p class="mt-1 text-[10px] text-slate-400">Pick at least 1 (up to 8)</p>
+                </div>
+                <span id="skillCount" class="text-[10px] font-bold text-electric">0 / 8</span>
+              </div>
+              <div id="skillChips" class="mt-4 flex flex-wrap gap-2">
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="React">React</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="TypeScript">TypeScript</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Node.js">Node.js</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Python">Python</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="FastAPI">FastAPI</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Machine Learning">Machine Learning</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="UI Design">UI Design</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="UX Research">UX Research</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Figma">Figma</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Flutter">Flutter</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Product Strategy">Product Strategy</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Community Management">Community Management</button>
+              </div>
+              <input type="hidden" id="skills" name="skills" />
+            </div>
+
+            <div class="mt-9">
+              <p class="text-xs font-bold text-navy">What domains are you curious about?</p>
+              <p class="mt-1 text-[10px] text-slate-400">Interests can be broader than your current technical skills.</p>
+              <div id="interestChips" class="mt-4 flex flex-wrap gap-2">
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="AI">AI</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="EdTech">EdTech</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="FinTech">FinTech</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Climate Tech">Climate Tech</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="HealthTech">HealthTech</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Startups">Startups</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Developer Communities">Developer Communities</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Open Source">Open Source</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Generative AI">Generative AI</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Social Impact">Social Impact</button>
+              </div>
+              <input type="hidden" id="interests" name="interests" />
+            </div>
+
+            <label class="mt-9 block">
+              <span class="mb-2 block text-xs font-bold text-navy">Additional custom skills or tools</span>
+              <input id="customSkills" name="customSkills" class="input" placeholder="e.g. Tailwind CSS, RAG, PyTorch, Pitching, Next.js…" />
+            </label>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="form-step hidden p-6 sm:p-9" data-step="3">
+            <div class="mb-8">
+              <span class="text-[10px] font-extrabold uppercase tracking-[.18em] text-electric">03 · Intent & Goal</span>
+              <h2 class="mt-2 text-2xl font-extrabold tracking-tight text-navy">What are you looking for right now?</h2>
+              <p class="mt-2 text-xs leading-5 text-slate-500">This makes recommendations sharp and explainable instead of generic keyword matching.</p>
+            </div>
+
+            <div>
+              <p class="mb-3 text-xs font-bold text-navy">Your primary intent <span class="text-electric">*</span></p>
+              <div class="grid gap-3 sm:grid-cols-2" id="intentContainer">
+                <button type="button" class="choice intent-choice text-left" data-value="Find teammates">
+                  <span class="material-symbols-outlined text-[21px] text-electric">group_add</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Find teammates</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I want people to build something with.</span>
+                </button>
+                <button type="button" class="choice intent-choice text-left" data-value="Join a project">
+                  <span class="material-symbols-outlined text-[21px] text-electric">rocket_launch</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Join a project</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I want hands-on work and a team.</span>
+                </button>
+                <button type="button" class="choice intent-choice text-left" data-value="Discover events">
+                  <span class="material-symbols-outlined text-[21px] text-electric">event</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Discover events</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I want workshops, meetups or hackathons.</span>
+                </button>
+                <button type="button" class="choice intent-choice text-left" data-value="Find a mentor">
+                  <span class="material-symbols-outlined text-[21px] text-electric">school</span>
+                  <span class="mt-2 block text-xs font-extrabold text-navy">Find a mentor</span>
+                  <span class="mt-1 block text-[10px] leading-4 text-slate-400">I want guidance, feedback and knowledge.</span>
+                </button>
+              </div>
+              <input type="hidden" id="intent" name="intent" />
+            </div>
+
+            <label class="mt-8 block">
+              <span class="mb-2 block text-xs font-bold text-navy">Your current goal <span class="text-electric">*</span></span>
+              <textarea id="goal" name="goal" required class="input" placeholder="Example: Build an AI-powered education project before December and find a frontend teammate."></textarea>
+              <span class="mt-2 block text-[10px] text-slate-400">Be as specific as possible — our deterministic AI match algorithm uses this directly.</span>
+            </label>
+
+            <div class="mt-8">
+              <p class="mb-3 text-xs font-bold text-navy">Preferred opportunity types</p>
+              <div id="opportunityChips" class="flex flex-wrap gap-2">
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Projects">Projects</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Hackathons">Hackathons</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Events">Events</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Mentors">Mentors</button>
+                <button type="button" class="chip rounded-full px-3 py-2 text-[11px] font-semibold" data-value="Communities">Communities</button>
+              </div>
+              <input type="hidden" id="opportunities" name="opportunities" />
+            </div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="form-step hidden p-6 sm:p-9" data-step="4">
+            <div class="mb-8">
+              <span class="text-[10px] font-extrabold uppercase tracking-[.18em] text-electric">04 · Availability & Preferences</span>
+              <h2 class="mt-2 text-2xl font-extrabold tracking-tight text-navy">Practical logistics</h2>
+              <p class="mt-2 text-xs leading-5 text-slate-500">Helps match opportunities you can actually participate in without schedule conflicts.</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <p class="mb-3 text-xs font-bold text-navy">Time availability</p>
+                <div class="grid gap-2">
+                  <button type="button" class="choice availability-choice text-left" data-value="Weekends">
+                    <span class="text-xs font-bold text-navy">Weekends</span>
+                    <span class="block text-[10px] text-slate-400">4–8 hrs on Saturdays & Sundays</span>
+                  </button>
+                  <button type="button" class="choice availability-choice text-left" data-value="Evenings">
+                    <span class="text-xs font-bold text-navy">Evenings</span>
+                    <span class="block text-[10px] text-slate-400">1–2 hrs after classes/work</span>
+                  </button>
+                  <button type="button" class="choice availability-choice text-left" data-value="Flexible">
+                    <span class="text-xs font-bold text-navy">Flexible / Hackathons</span>
+                    <span class="block text-[10px] text-slate-400">High availability sprints</span>
+                  </button>
+                </div>
+                <input type="hidden" id="availability" name="availability" value="Weekends" />
+              </div>
+
+              <div>
+                <p class="mb-3 text-xs font-bold text-navy">Collaboration mode</p>
+                <div class="grid gap-2">
+                  <button type="button" class="choice collaboration-choice text-left" data-value="Hybrid">
+                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-electric">sync_alt</span><span class="text-xs font-bold text-navy">Hybrid (Online & In Person)</span></span>
+                  </button>
+                  <button type="button" class="choice collaboration-choice text-left" data-value="Remote">
+                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-electric">language</span><span class="text-xs font-bold text-navy">Remote only</span></span>
+                  </button>
+                  <button type="button" class="choice collaboration-choice text-left" data-value="In Person">
+                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-electric">location_on</span><span class="text-xs font-bold text-navy">In Person preferred</span></span>
+                  </button>
+                </div>
+                <input type="hidden" id="collaboration" name="collaboration" value="Hybrid" />
+              </div>
+            </div>
+
+            <label class="mt-8 block">
+              <span class="mb-2 block text-xs font-bold text-navy">Ideal collaborator / teammate profile</span>
+              <textarea id="idealTeammate" name="idealTeammate" class="input" placeholder="Example: Looking for a product-minded designer or full-stack dev who is excited about shipping an MVP before the end of the year."></textarea>
+            </label>
+
+            <div class="mt-8 rounded-2xl border border-blue-100 bg-blue-50/60 p-4">
+              <div class="flex gap-3">
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white text-electric shadow-sm">
+                  <span class="material-symbols-outlined text-[18px]">psychology</span>
+                </span>
+                <div>
+                  <p class="text-xs font-extrabold text-navy">AI Matching Ready</p>
+                  <p class="mt-1 text-[10px] leading-5 text-slate-500">Your profile will be normalized and scored against the seed graph to generate personalized, explainable matches.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer controls -->
+          <div class="flex items-center justify-between gap-4 border-t border-slate-100 bg-slate-50/70 px-6 py-5 sm:px-9">
+            <button type="button" id="backBtn" class="invisible inline-flex items-center gap-2 rounded-xl px-4 py-3 text-xs font-bold text-slate-500 transition hover:bg-white hover:text-navy">
+              <span class="material-symbols-outlined text-[17px]">arrow_back</span>
+              Back
+            </button>
+            <div class="flex items-center gap-3">
+              <span id="saveHint" class="hidden text-[10px] font-semibold text-slate-400 sm:block">Progress auto-saved.</span>
+              <button type="button" id="nextBtn" class="group inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-3 text-xs font-extrabold text-white shadow-lg shadow-blue-900/10 transition hover:-translate-y-0.5 hover:bg-electric hover:shadow-glow">
+                Continue
+                <span class="material-symbols-outlined text-[17px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Live profile preview -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-28 rounded-3xl border border-slate-200 bg-white/85 p-5 shadow-soft backdrop-blur-xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-electric">Live preview</p>
+              <h3 class="mt-1 text-sm font-extrabold text-navy">Your match identity</h3>
+            </div>
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+              <span class="material-symbols-outlined text-[18px]">person</span>
+            </span>
+          </div>
+
+          <div class="mt-6 rounded-2xl bg-navy p-5 text-white">
+            <div class="flex items-center gap-3">
+              <div id="avatar" class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-electric to-indigo-500 text-sm font-extrabold">AM</div>
+              <div class="min-w-0">
+                <p id="previewName" class="truncate text-sm font-extrabold">Aarav Mehta</p>
+                <p id="previewMeta" class="truncate text-[10px] text-blue-200/70">Student · Demo Institute</p>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <p class="text-[9px] font-bold uppercase tracking-[.14em] text-blue-200/50">Current goal</p>
+              <p id="previewGoal" class="mt-2 text-xs leading-5 text-blue-50/85">Build an AI-powered education project before December</p>
+            </div>
+
+            <div class="mt-5">
+              <p class="text-[9px] font-bold uppercase tracking-[.14em] text-blue-200/50">Signals</p>
+              <div id="previewChips" class="mt-2 flex flex-wrap gap-1.5">
+                <span class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-semibold text-blue-100/70">React</span>
+                <span class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-semibold text-blue-100/70">AI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-500">Profile signal strength</span>
+              <span id="strengthLabel" class="text-[10px] font-extrabold text-electric">Getting started</span>
+            </div>
+            <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
+              <div id="strengthBar" class="h-full w-[8%] rounded-full bg-electric transition-all duration-500"></div>
+            </div>
+            <p id="strengthText" class="mt-2 text-[9px] leading-4 text-slate-400">Add a few details and we'll build a stronger matching profile.</p>
+          </div>
+
+          <div class="mt-5 flex gap-2">
+            <span class="material-symbols-outlined text-[17px] text-emerald-500">verified</span>
+            <p class="text-[10px] leading-4 text-slate-400">Deterministic scoring uses skills (35%), interests (20%), intent (15%), goal (20%), location & availability (10%).</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="/aleropath-core.js"></script>
+  <script>
+    const state = {
+      step: 1,
+      skills: ["React", "TypeScript", "Node.js"],
+      interests: ["AI", "EdTech"],
+      opportunities: ["Projects", "Hackathons"],
+      role: "Builder",
+      intent: "Find teammates",
+      availability: "Weekends",
+      collaboration: "Hybrid"
+    };
+
+    const steps = [...document.querySelectorAll(".form-step")];
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+
+    function setSingleChoice(selector, inputId) {
+      document.querySelectorAll(selector).forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(selector).forEach(x => x.classList.remove("selected"));
+          btn.classList.add("selected");
+          const val = btn.dataset.value;
+          const input = document.getElementById(inputId);
+          if (input) input.value = val;
+          state[inputId] = val;
+          updatePreview();
+        });
+      });
+    }
+
+    function setupChips(containerId, inputId, max = 99) {
+      const container = document.getElementById(containerId);
+      const input = document.getElementById(inputId);
+      if (!container || !input) return;
+
+      container.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const value = chip.dataset.value;
+          const list = state[inputId] || [];
+
+          if (chip.classList.contains("selected")) {
+            chip.classList.remove("selected");
+            state[inputId] = list.filter(x => x !== value);
+          } else {
+            if (list.length >= max) return;
+            chip.classList.add("selected");
+            state[inputId] = [...list, value];
+          }
+
+          input.value = state[inputId].join(", ");
+          if (inputId === "skills") {
+            document.getElementById("skillCount").textContent = `${state.skills.length} / 8`;
+          }
+          updatePreview();
+        });
+      });
+    }
+
+    setSingleChoice(".role-choice", "role");
+    setSingleChoice(".intent-choice", "intent");
+    setSingleChoice(".availability-choice", "availability");
+    setSingleChoice(".collaboration-choice", "collaboration");
+
+    setupChips("skillChips", "skills", 8);
+    setupChips("interestChips", "interests");
+    setupChips("opportunityChips", "opportunities");
+
+    function updateStepper() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        if (dot) {
+          dot.classList.remove("active", "done");
+          if (i < state.step) dot.classList.add("done");
+          if (i === state.step) dot.classList.add("active");
+        }
+      }
+      for (let i = 1; i <= 3; i++) {
+        const bar = document.getElementById(`bar${i}`);
+        if (bar) bar.style.width = state.step > i ? "100%" : "0%";
+      }
+    }
+
+    function showStep(n) {
+      state.step = n;
+      steps.forEach(step => step.classList.toggle("hidden", Number(step.dataset.step) !== n));
+      backBtn.classList.toggle("invisible", n === 1);
+
+      nextBtn.innerHTML = n === 4
+        ? 'Create my profile <span class="material-symbols-outlined text-[17px]">auto_awesome</span>'
+        : 'Continue <span class="material-symbols-outlined text-[17px]">arrow_forward</span>';
+
+      document.getElementById("saveHint").classList.toggle("hidden", n === 1);
+      updateStepper();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /**
+     * CRITICAL VALIDATION BUG FIX:
+     * Reads directly from selected DOM elements and text fields to prevent stale state issues.
+     */
+    function validateStep() {
+      if (state.step === 1) {
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        if (!name) {
+          alert("Please enter your full name.");
+          document.getElementById("name").focus();
+          return false;
+        }
+        if (!email || !email.includes("@")) {
+          alert("Please enter a valid email address.");
+          document.getElementById("email").focus();
+          return false;
+        }
+      }
+
+      if (state.step === 2) {
+        if (!state.skills || state.skills.length === 0) {
+          alert("Please select at least one skill to enable AI matching.");
+          return false;
+        }
+      }
+
+      if (state.step === 3) {
+        // Find visible selected intent or value in hidden input or fallback
+        const selectedIntentBtn = document.querySelector(".intent-choice.selected");
+        const intentVal = (selectedIntentBtn ? selectedIntentBtn.dataset.value : "") || 
+                          document.getElementById("intent").value || 
+                          state.intent || 
+                          "";
+        
+        const goalVal = document.getElementById("goal").value.trim();
+
+        // Synchronize state
+        state.intent = intentVal;
+        document.getElementById("intent").value = intentVal;
+
+        if (!intentVal) {
+          alert("Please select your primary intent.");
+          return false;
+        }
+        if (!goalVal) {
+          alert("Please describe your current goal to continue.");
+          document.getElementById("goal").focus();
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function collectProfile() {
+      const selectedIntentBtn = document.querySelector(".intent-choice.selected");
+      const intentVal = (selectedIntentBtn ? selectedIntentBtn.dataset.value : "") || document.getElementById("intent").value || state.intent || "Find teammates";
+
+      const selectedRoleBtn = document.querySelector(".role-choice.selected");
+      const roleVal = (selectedRoleBtn ? selectedRoleBtn.dataset.value : "") || document.getElementById("role").value || state.role || "Builder";
+
+      const selectedAvailBtn = document.querySelector(".availability-choice.selected");
+      const availVal = (selectedAvailBtn ? selectedAvailBtn.dataset.value : "") || document.getElementById("availability").value || state.availability || "Weekends";
+
+      const selectedCollabBtn = document.querySelector(".collaboration-choice.selected");
+      const collabVal = (selectedCollabBtn ? selectedCollabBtn.dataset.value : "") || document.getElementById("collaboration").value || state.collaboration || "Hybrid";
+
+      return {
+        id: "p-" + Date.now(),
+        name: document.getElementById("name").value.trim() || "Aarav Mehta",
+        email: document.getElementById("email").value.trim() || "aarav@example.com",
+        institution: document.getElementById("institution").value.trim() || "Demo Institute of Technology",
+        field: document.getElementById("field").value.trim() || "Computer Science",
+        experience_level: document.getElementById("experience_level").value || "Intermediate",
+        city: document.getElementById("location").value.trim().split(",")[0].trim() || "Bengaluru",
+        location: document.getElementById("location").value.trim() || "Bengaluru, India",
+        role: roleVal,
+        skills: state.skills && state.skills.length ? state.skills : ["React", "TypeScript", "Node.js"],
+        interests: state.interests && state.interests.length ? state.interests : ["AI", "EdTech"],
+        customSkills: document.getElementById("customSkills").value.trim(),
+        intent: intentVal,
+        goal: document.getElementById("goal").value.trim() || "Build an AI-powered education project before December",
+        opportunities: state.opportunities,
+        availability: availVal,
+        collaboration: collabVal,
+        idealTeammate: document.getElementById("idealTeammate").value.trim(),
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function updatePreview() {
+      const p = collectProfile();
+      document.getElementById("previewName").textContent = p.name || "Your name";
+      document.getElementById("previewMeta").textContent = [p.experience_level, p.institution].filter(Boolean).join(" · ");
+      document.getElementById("previewGoal").textContent = p.goal || "Your goal will appear here.";
+
+      const signals = [...(p.skills || []).slice(0, 3), ...(p.interests || []).slice(0, 2)];
+      document.getElementById("previewChips").innerHTML = signals.length
+        ? signals.map(s => `<span class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-semibold text-blue-100/80">${s}</span>`).join("")
+        : '<span class="rounded-full bg-white/10 px-2 py-1 text-[9px] font-semibold text-blue-100/70">React</span>';
+
+      const initials = (p.name || "AM").split(/\s+/).filter(Boolean).slice(0,2).map(x => x[0].toUpperCase()).join("") || "AM";
+      document.getElementById("avatar").textContent = initials;
+
+      const score = window.Aleropath ? window.Aleropath.calculateProfileCompleteness(p) : 75;
+      document.getElementById("strengthBar").style.width = `${Math.max(10, score)}%`;
+
+      let label = "Good start";
+      let text = "Keep adding signals to optimize deterministic match scoring.";
+      if (score >= 60) { label = "Strong signal"; text = "Great context for skill & interest weights."; }
+      if (score >= 85) { label = "Match-ready"; text = "Optimal signal density for 60-99% AI rank engine."; }
+
+      document.getElementById("strengthLabel").textContent = `${label} (${score}%)`;
+      document.getElementById("strengthText").textContent = text;
+    }
+
+    // Populate initial form values from existing or draft profile
+    function initForm() {
+      const existing = (window.Aleropath && window.Aleropath.getProfile()) || null;
+      if (existing) {
+        if (existing.name && document.getElementById("name")) document.getElementById("name").value = existing.name;
+        if (existing.email && document.getElementById("email")) document.getElementById("email").value = existing.email;
+        if (existing.institution && document.getElementById("institution")) document.getElementById("institution").value = existing.institution;
+        if (existing.field && document.getElementById("field")) document.getElementById("field").value = existing.field;
+        if (existing.experience_level && document.getElementById("experience_level")) document.getElementById("experience_level").value = existing.experience_level;
+        if ((existing.location || existing.city) && document.getElementById("location")) document.getElementById("location").value = existing.location || existing.city;
+        if (existing.customSkills && document.getElementById("customSkills")) document.getElementById("customSkills").value = existing.customSkills;
+        if (existing.goal && document.getElementById("goal")) document.getElementById("goal").value = existing.goal;
+        if (existing.idealTeammate && document.getElementById("idealTeammate")) document.getElementById("idealTeammate").value = existing.idealTeammate;
+
+        if (existing.skills && Array.isArray(existing.skills)) {
+          state.skills = [...existing.skills];
+        }
+        if (existing.interests && Array.isArray(existing.interests)) {
+          state.interests = [...existing.interests];
+        }
+        if (existing.role) state.role = existing.role;
+        if (existing.intent) state.intent = existing.intent;
+        if (existing.availability) state.availability = existing.availability;
+        if (existing.collaboration) state.collaboration = existing.collaboration;
+      }
+
+      // Sync chips in UI
+      document.querySelectorAll("#skillChips .chip").forEach(c => {
+        if (state.skills.includes(c.dataset.value)) c.classList.add("selected");
+      });
+      document.querySelectorAll("#interestChips .chip").forEach(c => {
+        if (state.interests.includes(c.dataset.value)) c.classList.add("selected");
+      });
+      document.querySelectorAll("#opportunityChips .chip").forEach(c => {
+        if (state.opportunities.includes(c.dataset.value)) c.classList.add("selected");
+      });
+
+      // Sync choice buttons in UI
+      document.querySelectorAll(".role-choice").forEach(b => {
+        if (b.dataset.value === state.role) b.classList.add("selected");
+      });
+      document.querySelectorAll(".intent-choice").forEach(b => {
+        if (b.dataset.value === state.intent) b.classList.add("selected");
+      });
+      document.querySelectorAll(".availability-choice").forEach(b => {
+        if (b.dataset.value === state.availability) b.classList.add("selected");
+      });
+      document.querySelectorAll(".collaboration-choice").forEach(b => {
+        if (b.dataset.value === state.collaboration) b.classList.add("selected");
+      });
+
+      document.getElementById("skillCount").textContent = `${state.skills.length} / 8`;
+      updatePreview();
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (!validateStep()) return;
+
+      if (state.step < 4) {
+        showStep(state.step + 1);
+      } else {
+        const profile = collectProfile();
+        if (window.Aleropath) {
+          window.Aleropath.saveProfile(profile);
+          window.Aleropath.signIn(profile);
+          window.Aleropath.showToast("Profile saved! Welcome to Aleropath Connect.");
+        }
+
+        nextBtn.disabled = true;
+        nextBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[17px]">progress_activity</span> Setting up your personalized experience…';
+
+        setTimeout(() => {
+          window.location.href = "LandingScreen.html";
+        }, 500);
+      }
+      updatePreview();
+    });
+
+    backBtn.addEventListener("click", () => {
+      if (state.step > 1) showStep(state.step - 1);
+    });
+
+    document.querySelectorAll("#profileForm input, #profileForm textarea, #profileForm select").forEach(el => {
+      el.addEventListener("input", updatePreview);
+      el.addEventListener("change", updatePreview);
+    });
+
+    initForm();
+  </script>
+</body>
+</html>

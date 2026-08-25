@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07142f" />
+  <title>Aleropath Connect — Your AI Matches</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#07142f",
+            navy: "#0b1f3a",
+            electric: "#2f6df6",
+            mist: "#f5f8ff",
+            line: "#dce5f4"
+          },
+          boxShadow: {
+            soft: "0 18px 55px rgba(7,20,47,.08)",
+            card: "0 12px 38px rgba(7,20,47,.06)",
+            glow: "0 18px 60px rgba(47,109,246,.18)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 92% 3%, rgba(47,109,246,.11), transparent 27rem),
+        radial-gradient(circle at 3% 45%, rgba(98,139,232,.08), transparent 25rem),
+        #f8faff;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(11,31,58,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,31,58,.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+    .glass {
+      background: rgba(255,255,255,.80);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .gradient-text {
+      background: linear-gradient(110deg, #07142f 10%, #194cae 55%, #2f6df6 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .match-card {
+      border: 1px solid #e1e8f3;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 12px 38px rgba(7,20,47,.05);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .match-card:hover {
+      transform: translateY(-5px);
+      border-color: #c2d4f3;
+      box-shadow: 0 24px 58px rgba(7,20,47,.10);
+    }
+    .match-card.top-match {
+      border-color: #9bbcf5;
+      box-shadow: 0 20px 65px rgba(47,109,246,.12);
+    }
+    .filter-btn {
+      transition: .18s ease;
+    }
+    .filter-btn:hover { transform: translateY(-1px); }
+    .filter-btn.active {
+      background: #0b1f3a;
+      color: white;
+      border-color: #0b1f3a;
+      box-shadow: 0 8px 24px rgba(7,20,47,.12);
+    }
+    .score-ring {
+      background: conic-gradient(#2f6df6 var(--score), #e7eef8 0);
+    }
+    .score-ring::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 999px;
+      background: white;
+    }
+    .pulse-dot { animation: pulse 1.8s infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(47,109,246,.22); }
+      50% { box-shadow: 0 0 0 8px rgba(47,109,246,0); }
+    }
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .shine::after {
+      content: "";
+      position: absolute;
+      top: -120%;
+      left: -30%;
+      width: 35%;
+      height: 340%;
+      transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      animation: shine 5s infinite;
+    }
+    @keyframes shine {
+      0%, 55% { left: -40%; }
+      75%, 100% { left: 130%; }
+    }
+    .loading-shimmer {
+      background: linear-gradient(90deg, #eef3fb 25%, #f8fbff 50%, #eef3fb 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.3s infinite;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .fade-up { animation: fadeUp .45s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reason-line { transition: width .7s ease; }
+  </style>
+</head>
+
+<body class="min-h-screen text-ink antialiased">
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="grid-bg absolute inset-0"></div>
+    <div class="absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-blue-400/10 blur-3xl"></div>
+    <div class="absolute -left-40 top-[45%] h-[27rem] w-[27rem] rounded-full bg-indigo-300/10 blur-3xl"></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
+    <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+      <a href="LandingScreen.html" class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white shadow-lg shadow-blue-900/10">
+          <span class="material-symbols-outlined text-[21px]">hub</span>
+        </span>
+        <span>
+          <span class="block text-[15px] font-extrabold tracking-tight text-navy">Aleropath</span>
+          <span class="block text-[10px] font-bold tracking-[.2em] text-slate-400">CONNECT</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-1 rounded-2xl border border-slate-200 bg-white/70 p-1 md:flex">
+        <a href="LandingScreen.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Home</a>
+        <a href="AiMatch.html" class="rounded-xl bg-navy px-4 py-2 text-xs font-bold text-white shadow-sm">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl px-4 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-50 hover:text-navy">Dashboard</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="ProfileCreation.html" class="hidden rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-600 transition hover:-translate-y-0.5 hover:border-blue-200 hover:text-electric sm:inline-flex">
+          Edit profile
+        </a>
+        <button id="mobileNav" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-navy md:hidden">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-5 py-3 md:hidden">
+      <div class="grid gap-1">
+        <a href="LandingScreen.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Home</a>
+        <a href="AiMatch.html" class="rounded-xl bg-blue-50 px-3 py-2.5 text-xs font-bold text-electric">Matches</a>
+        <a href="OpportunityFeed.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Feed</a>
+        <a href="Dashboard.html" class="rounded-xl px-3 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-12">
+    <!-- HERO -->
+    <section class="relative overflow-hidden rounded-[30px] border border-blue-100 bg-gradient-to-br from-[#07142f] via-[#0b1f3a] to-[#123c87] p-6 text-white shadow-glow sm:p-9">
+      <div class="pointer-events-none absolute -right-28 -top-36 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-36 left-1/3 h-72 w-72 rounded-full bg-indigo-400/15 blur-3xl"></div>
+
+      <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.15em] text-blue-100">
+            <span class="pulse-dot h-2 w-2 rounded-full bg-blue-300"></span>
+            Deterministic AI Matching Engine (60–99% Scale)
+          </div>
+
+          <h1 class="mt-5 max-w-3xl text-3xl font-extrabold tracking-[-.04em] sm:text-5xl">
+            Your next meaningful connection is
+            <span class="text-blue-300">closer than you think.</span>
+          </h1>
+
+          <p id="heroSub" class="mt-4 max-w-2xl text-sm leading-6 text-blue-100/75 sm:text-base">
+            We compared your profile signals against the community to find people, projects and opportunities that fit your direction.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2" id="profileSignals">
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Skills (35%)</span>
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Goal (20%)</span>
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Interests (20%)</span>
+            <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">Intent (15%)</span>
+          </div>
+        </div>
+
+        <div class="hidden lg:block">
+          <div class="shine rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+            <div class="flex items-center gap-3">
+              <span class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10">
+                <span class="material-symbols-outlined text-[22px] text-blue-200">auto_awesome</span>
+              </span>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-[.15em] text-blue-200/60">Engine status</p>
+                <p class="mt-1 text-xs font-extrabold text-white" id="engineStatus">Deterministic graph · Synced</p>
+              </div>
+            </div>
+            <div class="mt-4 h-px bg-white/10"></div>
+            <div class="mt-4 flex items-center justify-between gap-6">
+              <div>
+                <p class="text-2xl font-extrabold" id="matchCount">18</p>
+                <p class="text-[9px] text-blue-100/60">ranked signals</p>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold" id="typeCount">3</p>
+                <p class="text-[9px] text-blue-100/60">match types</p>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold text-emerald-300">100%</p>
+                <p class="text-[9px] text-blue-100/60">explainable</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERSONALIZATION BAR -->
+    <section class="mt-6 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-electric shadow-sm ring-1 ring-slate-200">
+          <span class="material-symbols-outlined text-[19px]">person_search</span>
+        </div>
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-[.14em] text-slate-400">Matching for</p>
+          <p id="userContext" class="mt-0.5 text-sm font-extrabold text-navy">Aarav Mehta · Demo Institute of Technology</p>
+        </div>
+        <span class="hidden h-5 w-px bg-slate-200 sm:block"></span>
+        <p id="goalContext" class="max-w-xl text-xs text-slate-500">Goal: Build an AI-powered education project before December</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="ProfileCreation.html" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs font-bold text-slate-600 transition hover:border-blue-200 hover:text-electric">
+          <span class="material-symbols-outlined text-[16px]">tune</span>
+          Refine profile
+        </a>
+        <button id="rerunBtn" class="group inline-flex items-center justify-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-electric hover:shadow-md">
+          <span class="material-symbols-outlined text-[17px] transition-transform group-hover:rotate-180">refresh</span>
+          Recalculate
+        </button>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <section class="mt-8 flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-[10px] font-extrabold uppercase tracking-[.16em] text-electric">Curated for you</p>
+        <h2 class="mt-1 text-xl font-extrabold tracking-tight text-navy">Top matches</h2>
+      </div>
+
+      <div class="flex flex-wrap gap-2" id="filters">
+        <button class="filter-btn active rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold" data-filter="all">All <span class="ml-1 opacity-60" id="allCount">18</span></button>
+        <button class="filter-btn rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="project">Projects</button>
+        <button class="filter-btn rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="person">People</button>
+        <button class="filter-btn rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[10px] font-extrabold text-slate-500" data-filter="event">Events & Competitions</button>
+      </div>
+    </section>
+
+    <!-- MATCH GRID -->
+    <section id="matchesGrid" class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3"></section>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="hidden rounded-3xl border border-dashed border-slate-300 bg-white/70 p-12 text-center">
+      <span class="material-symbols-outlined text-4xl text-slate-300">search_off</span>
+      <h3 class="mt-4 text-lg font-extrabold text-navy">No matches in this category</h3>
+      <p class="mx-auto mt-2 max-w-md text-xs leading-5 text-slate-400">Try another filter or add opportunities from the feed.</p>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="loadingState" class="hidden grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+
+    <!-- WHY IT WORKS -->
+    <section class="mt-14 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-soft">
+      <div class="grid lg:grid-cols-[.85fr_1.15fr]">
+        <div class="bg-navy p-7 text-white sm:p-9">
+          <span class="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[.16em] text-blue-300">
+            <span class="material-symbols-outlined text-[16px]">psychology</span>
+            Deterministic & Explainable AI
+          </span>
+          <h2 class="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">Not just a score.<br />A reason.</h2>
+          <p class="mt-4 text-xs leading-6 text-blue-100/65">
+            The point isn't to tell a student “98% match” and leave them guessing.
+            Aleropath calculates deterministic weights across skills (35%), interests (20%), intent (15%), and goal alignment (20%) so every connection feels intentional.
+          </p>
+          <a href="ProfileCreation.html" class="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-xs font-extrabold text-navy transition hover:-translate-y-0.5 hover:bg-blue-50">
+            Improve my profile
+            <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="p-7 sm:p-9">
+          <div class="grid gap-5 sm:grid-cols-3">
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+              <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+                <span class="material-symbols-outlined text-[18px]">target</span>
+              </span>
+              <p class="mt-4 text-xs font-extrabold text-navy">Skill Overlap (35%)</p>
+              <p class="mt-1 text-[10px] leading-4 text-slate-400">Direct intersection of your technical strengths and requirements.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+              <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+                <span class="material-symbols-outlined text-[18px]">flag</span>
+              </span>
+              <p class="mt-4 text-xs font-extrabold text-navy">Goal Alignment (20%)</p>
+              <p class="mt-1 text-[10px] leading-4 text-slate-400">Matches your current focus and target delivery timeline.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+              <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-electric">
+                <span class="material-symbols-outlined text-[18px]">handshake</span>
+              </span>
+              <p class="mt-4 text-xs font-extrabold text-navy">Interests & Intent (35%)</p>
+              <p class="mt-1 text-[10px] leading-4 text-slate-400">Aligned domain curiosity, role fit and collaboration intent.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT STEP -->
+    <section class="mt-8 flex flex-col items-start justify-between gap-4 rounded-3xl border border-blue-100 bg-blue-50/60 p-5 sm:flex-row sm:items-center sm:p-6">
+      <div class="flex gap-3">
+        <span class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white text-electric shadow-sm">
+          <span class="material-symbols-outlined text-[19px]">group_add</span>
+        </span>
+        <div>
+          <p class="text-xs font-extrabold text-navy">Need to assemble a complete Hackathon Team?</p>
+          <p class="mt-1 text-[10px] leading-5 text-slate-500">Let our AI engine analyze your project goals and select the optimal multi-disciplinary team members.</p>
+        </div>
+      </div>
+      <button id="openTeamWizardBtn" class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-electric px-5 py-3 text-xs font-extrabold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-glow">
+        <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+        Assemble Team Wizard
+      </button>
+    </section>
+  </main>
+
+  <!-- DETAILS MODAL -->
+  <div id="detailsModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-5">
+    <div id="modalBackdrop" class="absolute inset-0 bg-navy/50 backdrop-blur-sm"></div>
+    <div class="relative max-h-[90vh] w-full max-w-2xl overflow-auto rounded-[28px] border border-white/60 bg-white p-6 shadow-2xl sm:p-8">
+      <button id="closeModal" class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-navy">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- PHASE 1: LIVE TEAM WORKSPACE DRAWER -->
+  <div id="workspaceDrawer" class="fixed inset-0 z-[110] hidden overflow-hidden">
+    <div id="wsBackdrop" class="absolute inset-0 bg-navy/50 backdrop-blur-sm"></div>
+    <aside class="absolute right-0 top-0 bottom-0 w-full max-w-lg bg-white shadow-2xl flex flex-col transition-transform duration-300 transform">
+      <div class="flex items-center justify-between border-b border-slate-100 bg-navy p-5 text-white">
+        <div class="flex items-center gap-3">
+          <span class="grid h-10 w-10 place-items-center rounded-2xl bg-electric text-white font-extrabold text-sm" id="wsAvatar">WS</span>
+          <div>
+            <h3 class="text-sm font-extrabold text-white" id="wsTitle">Team Workspace</h3>
+            <p class="text-[10px] text-blue-200" id="wsStatus">Active Collaboration Room</p>
+          </div>
+        </div>
+        <button id="closeWsBtn" class="grid h-8 w-8 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/20">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- Drawer Tabs -->
+      <div class="flex border-b border-slate-200 bg-slate-50 px-5 text-xs font-bold text-slate-500">
+        <button id="tabChat" class="ws-tab active border-b-2 border-electric py-3 px-3 text-electric">💬 Live Chat</button>
+        <button id="tabTasks" class="ws-tab py-3 px-3 hover:text-navy">📋 Task Board</button>
+        <button id="tabLinks" class="ws-tab py-3 px-3 hover:text-navy">🔗 Project Links</button>
+      </div>
+
+      <!-- Drawer Body -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-4" id="wsBody">
+        <!-- Chat Content -->
+        <div id="wsChatSection" class="flex flex-col h-full justify-between space-y-4">
+          <div id="msgList" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+          <form id="msgForm" class="flex gap-2 pt-2 border-t border-slate-100">
+            <input type="text" id="msgInput" placeholder="Type a message to your team..." class="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-xs outline-none focus:border-electric" required />
+            <button type="submit" class="rounded-xl bg-electric px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700">Send</button>
+          </form>
+        </div>
+
+        <!-- Tasks Content -->
+        <div id="wsTasksSection" class="hidden space-y-3">
+          <p class="text-xs font-extrabold text-navy">Project Task Checklist</p>
+          <div id="taskList" class="space-y-2"></div>
+        </div>
+
+        <!-- Links Content -->
+        <div id="wsLinksSection" class="hidden space-y-3">
+          <p class="text-xs font-extrabold text-navy">Shared Workspaces & Repos</p>
+          <div id="linkList" class="space-y-2"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- PHASE 4: ASSEMBLE HACKATHON TEAM WIZARD MODAL -->
+  <div id="teamWizardModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-5">
+    <div id="twBackdrop" class="absolute inset-0 bg-navy/50 backdrop-blur-sm"></div>
+    <div class="relative max-h-[90vh] w-full max-w-2xl overflow-auto rounded-[28px] border border-white/60 bg-white p-6 shadow-2xl sm:p-8">
+      <button id="closeTwBtn" class="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-500 hover:bg-slate-200">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <span class="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-navy to-electric text-white">
+          <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+        </span>
+        <div>
+          <h2 class="text-xl font-extrabold text-navy">Assemble Hackathon Team</h2>
+          <p class="text-xs text-slate-500">AI multi-role team balancer for hackathons</p>
+        </div>
+      </div>
+
+      <div class="mt-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-navy mb-2">Select missing roles for your project:</label>
+          <div class="flex flex-wrap gap-2" id="rolePicker">
+            <span class="role-chip active cursor-pointer rounded-full border border-electric bg-blue-50 px-3 py-1.5 text-xs font-extrabold text-electric" data-role="UI/UX Designer">✓ UI/UX Designer</span>
+            <span class="role-chip active cursor-pointer rounded-full border border-electric bg-blue-50 px-3 py-1.5 text-xs font-extrabold text-electric" data-role="AI / ML Engineer">✓ AI / ML Engineer</span>
+            <span class="role-chip active cursor-pointer rounded-full border border-electric bg-blue-50 px-3 py-1.5 text-xs font-extrabold text-electric" data-role="Backend Developer">✓ Backend Developer</span>
+            <span class="role-chip cursor-pointer rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600" data-role="Full Stack Developer">Full Stack Developer</span>
+          </div>
+        </div>
+
+        <button id="generateTeamBtn" class="w-full rounded-xl bg-electric py-3 text-xs font-extrabold text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700">
+          ✨ Generate Balanced Team Matches
+        </button>
+
+        <div id="teamResults" class="mt-6 space-y-3 hidden">
+          <p class="text-xs font-extrabold text-navy">AI Assembled Team Recommendations</p>
+          <div id="teamList" class="space-y-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/aleropath-core.js"></script>
+  <script>
+    let matches = [];
+    let activeFilter = "all";
+
+    function typeIcon(type) {
+      if (type === "person") return "person";
+      if (type === "event" || type === "competition" || type === "workshop") return "event";
+      if (type === "mentor") return "school";
+      return "rocket_launch";
+    }
+
+    function typeClass(type) {
+      if (type === "person") return "bg-blue-50 text-blue-600";
+      if (type === "event" || type === "competition" || type === "workshop") return "bg-cyan-50 text-cyan-700";
+      if (type === "mentor") return "bg-violet-50 text-violet-700";
+      return "bg-indigo-50 text-indigo-600";
+    }
+
+    function avatarClass(tone) {
+      return {
+        blue: "from-blue-500 to-indigo-600",
+        indigo: "from-indigo-500 to-violet-600",
+        violet: "from-violet-500 to-fuchsia-600",
+        cyan: "from-cyan-500 to-blue-600",
+        emerald: "from-emerald-500 to-teal-600"
+      }[tone] || "from-blue-500 to-indigo-600";
+    }
+
+    async function loadAndComputeMatches() {
+      const profile = window.Aleropath.getProfile();
+      
+      // Update UI with profile context
+      const firstName = (profile.name || "Aarav").split(" ")[0];
+      document.getElementById("heroSub").textContent =
+        `We compared ${firstName}'s profile signals against the ecosystem to find people, projects and opportunities that fit your direction right now.`;
+
+      document.getElementById("userContext").textContent =
+        `${profile.name || "Your profile"}${profile.institution ? " · " + profile.institution : ""}`;
+
+      document.getElementById("goalContext").textContent =
+        profile.goal ? `Goal: ${profile.goal}` : "Add your goal to make match explanations even sharper.";
+
+      const signals = [
+        ...(profile.skills || []).slice(0, 3),
+        ...(profile.interests || []).slice(0, 2),
+        profile.intent
+      ].filter(Boolean);
+
+      if (signals.length) {
+        document.getElementById("profileSignals").innerHTML = signals
+          .map(s => `<span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-semibold text-blue-100/80">${s}</span>`)
+          .join("");
+      }
+
+      // Compute deterministic matches across the full opportunity & profile graph
+      matches = await window.Aleropath.computePersonalizedMatches(profile);
+      renderMatches(activeFilter);
+
+      // Auto-open workspace if targetId is in URL query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get("targetId");
+      if (targetId) {
+        const match = matches.find(m => m.id === targetId);
+        openWorkspace(targetId, match ? match.title : "Team Workspace");
+      }
+    }
+
+    function renderMatches(filter = activeFilter) {
+      const grid = document.getElementById("matchesGrid");
+      const empty = document.getElementById("emptyState");
+
+      let visible = matches;
+      if (filter === "person") {
+        visible = matches.filter(m => m.type === "person");
+      } else if (filter === "project") {
+        visible = matches.filter(m => m.type === "project");
+      } else if (filter === "event") {
+        visible = matches.filter(m => m.type === "event" || m.typeLabel === "EVENT" || m.typeLabel === "COMPETITION" || m.typeLabel === "WORKSHOP");
+      }
+
+      document.getElementById("allCount").textContent = matches.length;
+      document.getElementById("matchCount").textContent = matches.length;
+
+      if (!visible.length) {
+        grid.innerHTML = "";
+        empty.classList.remove("hidden");
+        return;
+      }
+
+      empty.classList.add("hidden");
+
+      const savedList = window.Aleropath.getSavedOpportunities();
+      const connectionList = window.Aleropath.getConnections().map(c => c.id);
+
+      grid.innerHTML = visible.map((m, index) => {
+        const isConnected = connectionList.includes(m.id);
+        const isSaved = savedList.includes(m.id);
+        let buttonText = m.cta;
+        let btnBg = "bg-navy text-white hover:bg-electric";
+        if (m.type === "event" && isSaved) {
+          buttonText = "Saved ✓";
+          btnBg = "bg-emerald-600 text-white";
+        } else if (isConnected) {
+          buttonText = "💬 Open Workspace";
+          btnBg = "bg-electric text-white shadow-glow";
+        }
+
+        return `
+        <article class="match-card ${index === 0 && filter === "all" ? "top-match" : ""} fade-up" style="animation-delay:${index * 40}ms">
+          <div class="relative p-5 sm:p-6">
+            ${index === 0 && filter === "all" ? `
+              <div class="absolute -top-px left-5 rounded-b-xl bg-electric px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[.13em] text-white shadow-sm">
+                Top Match
+              </div>` : ""}
+
+            <div class="flex items-start justify-between gap-4 ${index === 0 && filter === "all" ? "pt-4" : ""}">
+              <div class="flex min-w-0 items-center gap-3">
+                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${avatarClass(m.tone)} text-xs font-extrabold text-white shadow-lg shadow-blue-900/10">
+                  ${m.type === "person" ? (m.avatar || "AC") : `<span class="material-symbols-outlined text-[21px]">${typeIcon(m.type)}</span>`}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="truncate text-sm font-extrabold text-navy">${m.title}</h3>
+                    <span class="material-symbols-outlined text-[14px] text-blue-500">verified</span>
+                  </div>
+                  <p class="mt-1 truncate text-[10px] font-medium text-slate-400">${m.subtitle}</p>
+                </div>
+              </div>
+
+              <div class="relative grid h-12 w-12 shrink-0 place-items-center">
+                <div class="score-ring h-12 w-12 rounded-full" style="--score:${m.score}%"></div>
+                <div class="absolute inset-0 grid place-items-center">
+                  <span class="relative z-10 text-[11px] font-extrabold text-navy">${m.score}%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5 flex items-center justify-between">
+              <span class="inline-flex items-center gap-1.5 rounded-full ${typeClass(m.type)} px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[.08em]">
+                <span class="material-symbols-outlined text-[14px]">${typeIcon(m.type)}</span>
+                ${m.typeLabel}
+              </span>
+              <span class="text-[9px] font-bold text-slate-400">Deterministic Match</span>
+            </div>
+
+            <div class="mt-4 rounded-2xl border border-blue-100 bg-blue-50/55 p-4">
+              <div class="flex gap-2.5">
+                <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white text-electric shadow-sm">
+                  <span class="material-symbols-outlined text-[15px]">psychology</span>
+                </span>
+                <div>
+                  <p class="text-[9px] font-extrabold uppercase tracking-[.12em] text-blue-600">Why this matches</p>
+                  <p class="mt-1.5 text-[11px] leading-5 text-slate-600">${m.reason}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-[9px] font-extrabold uppercase tracking-[.12em] text-slate-400">Match signals</span>
+                <button class="details-trigger text-[9px] font-extrabold text-electric hover:underline" data-id="${m.id}">See breakdown →</button>
+              </div>
+              <div class="grid gap-2">
+                ${(m.signals || [["Skills", 92], ["Goal", 88], ["Interests", 90]]).map(([label, value]) => `
+                  <div>
+                    <div class="mb-1 flex items-center justify-between">
+                      <span class="text-[9px] font-semibold text-slate-500">${label}</span>
+                      <span class="text-[9px] font-extrabold text-navy">${value}%</span>
+                    </div>
+                    <div class="h-1.5 overflow-hidden rounded-full bg-slate-100">
+                      <div class="reason-line h-full rounded-full bg-gradient-to-r from-blue-400 to-electric" style="width:${value}%"></div>
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <div class="mt-5 flex flex-wrap gap-1.5">
+              ${(m.tags || []).slice(0, 4).map(tag => `<span class="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[9px] font-bold text-slate-500">${tag}</span>`).join("")}
+            </div>
+
+            <div class="mt-5 grid grid-cols-[1fr_auto] gap-2 border-t border-slate-100 pt-4">
+              <button class="details-trigger rounded-xl border border-slate-200 bg-white py-2.5 text-[10px] font-extrabold text-navy transition hover:border-blue-200 hover:bg-blue-50 hover:text-electric" data-id="${m.id}">
+                View details
+              </button>
+              <button class="connect-trigger rounded-xl ${btnBg} px-4 py-2.5 text-[10px] font-extrabold transition hover:-translate-y-0.5 hover:shadow-glow" data-id="${m.id}">
+                ${buttonText}
+              </button>
+            </div>
+          </div>
+        </article>
+      `}).join("");
+
+      bindCardActions();
+    }
+
+    function bindCardActions() {
+      document.querySelectorAll(".details-trigger").forEach(btn => {
+        btn.addEventListener("click", () => openDetails(btn.dataset.id));
+      });
+
+      document.querySelectorAll(".connect-trigger").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const match = matches.find(m => m.id === btn.dataset.id);
+          if (!match) return;
+
+          if (match.type === "event") {
+            window.Aleropath.saveOpportunity(match.id, match.title);
+            window.Aleropath.showToast(`Saved “${match.title}” to your opportunities!`);
+          } else {
+            window.Aleropath.recordConnection(match.id, match.title, match.type);
+            window.Aleropath.showToast(`Connection active for ${match.title}! Opening Team Workspace...`);
+            openWorkspace(match.id, match.title);
+          }
+
+          renderMatches(activeFilter);
+        });
+      });
+    }
+
+    function openDetails(id) {
+      const m = matches.find(x => x.id === id);
+      if (!m) return;
+
+      document.getElementById("modalContent").innerHTML = `
+        <div class="pr-8">
+          <div class="flex items-center gap-3">
+            <div class="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br ${avatarClass(m.tone)} text-sm font-extrabold text-white shadow-lg">
+              ${m.type === "person" ? (m.avatar || "AC") : `<span class="material-symbols-outlined text-[24px]">${typeIcon(m.type)}</span>`}
+            </div>
+            <div>
+              <span class="rounded-full ${typeClass(m.type)} px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[.1em]">${m.typeLabel}</span>
+              <h2 class="mt-2 text-xl font-extrabold tracking-tight text-navy">${m.title}</h2>
+              <p class="mt-1 text-xs text-slate-400">${m.subtitle}</p>
+            </div>
+          </div>
+
+          <div class="mt-7 grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
+            <div class="relative h-24 w-24">
+              <div class="score-ring absolute inset-0 rounded-full" style="--score:${m.score * 3.6}deg"></div>
+              <div class="absolute inset-0 grid place-items-center">
+                <div class="relative z-10 text-center">
+                  <p class="text-xl font-extrabold text-navy">${m.score}%</p>
+                  <p class="text-[8px] font-bold uppercase tracking-wider text-slate-400">fit</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-[9px] font-extrabold uppercase tracking-[.14em] text-electric">AI match reason</p>
+              <p class="mt-2 text-sm leading-6 text-slate-600">${m.reason}</p>
+              <p class="mt-2 text-xs font-semibold text-slate-500"><strong class="text-navy">Why now:</strong> ${m.why_now || 'High priority match in your domain.'}</p>
+            </div>
+          </div>
+
+          <div class="mt-7 rounded-2xl border border-slate-100 bg-slate-50 p-5">
+            <p class="text-[9px] font-extrabold uppercase tracking-[.14em] text-slate-400">Formula Weights Breakdown</p>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2">
+              ${(m.signals || []).map(([label, value]) => `
+                <div>
+                  <div class="flex justify-between">
+                    <span class="text-[10px] font-bold text-slate-500">${label}</span>
+                    <span class="text-[10px] font-extrabold text-navy">${value}%</span>
+                  </div>
+                  <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+                    <div class="h-full rounded-full bg-electric" style="width:${value}%"></div>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            ${(m.tags || []).map(tag => `<span class="rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[10px] font-bold text-blue-700">${tag}</span>`).join("")}
+          </div>
+
+          <div class="mt-7 flex gap-2">
+            <button class="modal-connect flex-1 rounded-xl bg-navy px-4 py-3 text-xs font-extrabold text-white transition hover:bg-electric" data-id="${m.id}">
+              ${m.type === "event" ? "Save to opportunities" : "💬 Connect & Open Team Workspace"}
+            </button>
+            <button id="modalCloseSecondary" class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-extrabold text-slate-600 hover:bg-slate-50">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("detailsModal").classList.remove("hidden");
+      document.getElementById("detailsModal").classList.add("flex");
+
+      document.querySelector(".modal-connect").addEventListener("click", () => {
+        if (m.type === "event") {
+          window.Aleropath.saveOpportunity(m.id, m.title);
+          window.Aleropath.showToast(`Saved “${m.title}” to your opportunities!`);
+        } else {
+          window.Aleropath.recordConnection(m.id, m.title, m.type);
+          window.Aleropath.showToast(`Connection active for ${m.title}! Opening Team Workspace...`);
+          openWorkspace(m.id, m.title);
+        }
+        closeDetails();
+        renderMatches(activeFilter);
+      });
+
+      document.getElementById("modalCloseSecondary").addEventListener("click", closeDetails);
+    }
+
+    function closeDetails() {
+      document.getElementById("detailsModal").classList.add("hidden");
+      document.getElementById("detailsModal").classList.remove("flex");
+    }
+
+    function renderLoading() {
+      const loading = document.getElementById("loadingState");
+      document.getElementById("matchesGrid").classList.add("hidden");
+      document.getElementById("emptyState").classList.add("hidden");
+      loading.classList.remove("hidden");
+      loading.innerHTML = Array.from({length: 6}, () => `
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="loading-shimmer h-12 w-12 rounded-2xl"></div>
+            <div class="flex-1">
+              <div class="loading-shimmer h-3 w-28 rounded"></div>
+              <div class="loading-shimmer mt-2 h-2.5 w-36 rounded"></div>
+            </div>
+            <div class="loading-shimmer h-12 w-12 rounded-full"></div>
+          </div>
+          <div class="loading-shimmer mt-6 h-24 rounded-2xl"></div>
+          <div class="loading-shimmer mt-5 h-3 w-full rounded"></div>
+        </div>
+      `).join("");
+    }
+
+    function stopLoading() {
+      document.getElementById("loadingState").classList.add("hidden");
+      document.getElementById("matchesGrid").classList.remove("hidden");
+    }
+
+    function rerunMatches() {
+      renderLoading();
+      setTimeout(async () => {
+        await loadAndComputeMatches();
+        stopLoading();
+        window.Aleropath.showToast("Match signals refreshed from the ecosystem graph.");
+      }, 600);
+    }
+
+    // --- PHASE 1: TEAM WORKSPACE DRAWER LOGIC ---
+    let activeWsId = null;
+
+    function openWorkspace(id, title) {
+      activeWsId = id;
+      const ws = window.Aleropath.getWorkspace(id, title);
+      document.getElementById("wsAvatar").textContent = (title || "WS").split(/\s+/).slice(0, 2).map(x => x[0].toUpperCase()).join("");
+      document.getElementById("wsTitle").textContent = ws.title;
+      renderWsChat(ws);
+      renderWsTasks(ws);
+      renderWsLinks(ws);
+
+      document.getElementById("workspaceDrawer").classList.remove("hidden");
+    }
+
+    function closeWorkspace() {
+      document.getElementById("workspaceDrawer").classList.add("hidden");
+    }
+
+    function renderWsChat(ws) {
+      const list = document.getElementById("msgList");
+      list.innerHTML = ws.messages.map(m => `
+        <div class="flex flex-col ${m.isMe ? 'items-end' : 'items-start'}">
+          <div class="rounded-2xl px-4 py-2.5 text-xs max-w-[80%] ${m.isMe ? 'bg-electric text-white' : 'bg-slate-100 text-navy'}">
+            <p class="font-bold text-[10px] opacity-75 mb-0.5">${m.sender}</p>
+            <p>${m.text}</p>
+          </div>
+          <span class="text-[8px] text-slate-400 mt-1">${m.time}</span>
+        </div>
+      `).join("");
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function renderWsTasks(ws) {
+      const list = document.getElementById("taskList");
+      list.innerHTML = ws.tasks.map(t => `
+        <div class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50 cursor-pointer" onclick="toggleTask('${t.id}')">
+          <input type="checkbox" ${t.done ? 'checked' : ''} class="h-4 w-4 rounded accent-electric cursor-pointer" />
+          <span class="text-xs font-bold ${t.done ? 'line-through text-slate-400' : 'text-navy'}">${t.title}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderWsLinks(ws) {
+      const list = document.getElementById("linkList");
+      list.innerHTML = ws.links.map(l => `
+        <a href="${l.url}" target="_blank" class="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3 hover:bg-blue-50 hover:border-blue-200 group">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[18px] text-electric">${l.icon}</span>
+            <span class="text-xs font-bold text-navy group-hover:text-electric">${l.label}</span>
+          </div>
+          <span class="material-symbols-outlined text-[16px] text-slate-400 group-hover:text-electric">open_in_new</span>
+        </a>
+      `).join("");
+    }
+
+    window.toggleTask = function(taskId) {
+      if (!activeWsId) return;
+      const ws = window.Aleropath.toggleWorkspaceTask(activeWsId, taskId);
+      renderWsTasks(ws);
+    };
+
+    document.getElementById("msgForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = document.getElementById("msgInput");
+      if (!input.value.trim() || !activeWsId) return;
+      const profile = window.Aleropath.getProfile();
+      const ws = window.Aleropath.sendWorkspaceMessage(activeWsId, input.value.trim(), profile.name || "Aarav Mehta");
+      input.value = "";
+      renderWsChat(ws);
+    });
+
+    // Drawer Tabs
+    document.querySelectorAll(".ws-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".ws-tab").forEach(t => t.classList.remove("active", "border-b-2", "border-electric", "text-electric"));
+        tab.classList.add("active", "border-b-2", "border-electric", "text-electric");
+
+        document.getElementById("wsChatSection").classList.add("hidden");
+        document.getElementById("wsTasksSection").classList.add("hidden");
+        document.getElementById("wsLinksSection").classList.add("hidden");
+
+        if (tab.id === "tabChat") document.getElementById("wsChatSection").classList.remove("hidden");
+        if (tab.id === "tabTasks") document.getElementById("wsTasksSection").classList.remove("hidden");
+        if (tab.id === "tabLinks") document.getElementById("wsLinksSection").classList.remove("hidden");
+      });
+    });
+
+    document.getElementById("closeWsBtn").addEventListener("click", closeWorkspace);
+    document.getElementById("wsBackdrop").addEventListener("click", closeWorkspace);
+
+    // --- PHASE 4: ASSEMBLE HACKATHON TEAM WIZARD ---
+    document.getElementById("openTeamWizardBtn").addEventListener("click", () => {
+      document.getElementById("teamWizardModal").classList.remove("hidden");
+      document.getElementById("teamWizardModal").classList.add("flex");
+    });
+
+    function closeTeamWizard() {
+      document.getElementById("teamWizardModal").classList.add("hidden");
+      document.getElementById("teamWizardModal").classList.remove("flex");
+    }
+
+    document.getElementById("closeTwBtn").addEventListener("click", closeTeamWizard);
+    document.getElementById("twBackdrop").addEventListener("click", closeTeamWizard);
+
+    document.querySelectorAll(".role-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        chip.classList.toggle("active");
+        if (chip.classList.contains("active")) {
+          chip.classList.add("border-electric", "bg-blue-50", "text-electric", "font-extrabold");
+          chip.classList.remove("border-slate-200", "bg-white", "text-slate-600", "font-bold");
+          chip.textContent = "✓ " + chip.dataset.role;
+        } else {
+          chip.classList.remove("border-electric", "bg-blue-50", "text-electric", "font-extrabold");
+          chip.classList.add("border-slate-200", "bg-white", "text-slate-600", "font-bold");
+          chip.textContent = chip.dataset.role;
+        }
+      });
+    });
+
+    document.getElementById("generateTeamBtn").addEventListener("click", async () => {
+      const selectedRoles = Array.from(document.querySelectorAll(".role-chip.active")).map(c => c.dataset.role);
+      if (!selectedRoles.length) {
+        window.Aleropath.showToast("Please select at least one team role!", "warning");
+        return;
+      }
+
+      const teamResults = await window.Aleropath.assembleTeam(selectedRoles);
+      const list = document.getElementById("teamList");
+      list.innerHTML = teamResults.map(r => `
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[9px] font-extrabold text-electric uppercase tracking-wider">${r.requestedRole}</span>
+            <span class="text-xs font-extrabold text-emerald-600">${r.matchScore}% fit</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="grid h-10 w-10 place-items-center rounded-xl bg-navy font-extrabold text-white text-xs">
+              ${(r.candidate.name || 'AC').split(/\s+/).slice(0, 2).map(x => x[0]).join('')}
+            </div>
+            <div>
+              <h4 class="text-xs font-extrabold text-navy">${r.candidate.name}</h4>
+              <p class="text-[10px] text-slate-400">${r.candidate.institution || 'Tech University'} · ${r.candidate.city || 'India'}</p>
+            </div>
+          </div>
+          <p class="text-[10px] leading-4 text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">${r.fitReason}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("teamResults").classList.remove("hidden");
+      window.Aleropath.showToast("Balanced Hackathon Team Assembled!");
+    });
+
+    // Connect / Workspace Button Handler on Cards
+    document.querySelectorAll(".connect-trigger").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const match = matches.find(m => m.id === id);
+        if (match) {
+          window.Aleropath.recordConnection(match.id, match.title, match.type);
+          openWorkspace(match.id, match.title);
+        }
+      });
+    });
+
+    // Filter controls
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.dataset.filter;
+        document.querySelectorAll(".filter-btn").forEach(x => {
+          x.classList.remove("active");
+          x.classList.add("text-slate-500");
+        });
+        btn.classList.add("active");
+        btn.classList.remove("text-slate-500");
+        renderMatches(activeFilter);
+      });
+    });
+
+    document.getElementById("rerunBtn").addEventListener("click", rerunMatches);
+    document.getElementById("closeModal").addEventListener("click", closeDetails);
+    document.getElementById("modalBackdrop").addEventListener("click", closeDetails);
+    document.getElementById("mobileNav").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
+
+    loadAndComputeMatches();
+  </script>
+</body>
+</html>
