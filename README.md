@@ -1,4 +1,4 @@
-<img width="4214" height="8192" alt="Aleropath Connect User" src="https://github.com/user-attachments/assets/9ec7e57c-7025-48c0-bd2e-04df3ded303d" /># ⚡ Aleropath Connect — The Community Engine
+# ⚡ Aleropath Connect — The Community Engine
 
 <div align="center">
 
