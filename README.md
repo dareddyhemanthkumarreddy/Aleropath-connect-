@@ -93,70 +93,10 @@ Because of this fragmentation:
 ---
 
 ## 🏗 System Architecture
+<img width="4678" height="4214" alt="Client Layer Opportunity-2026-08-25-111349" src="https://github.com/user-attachments/assets/a5dcbbed-050d-44e0-9269-2223616220d3" />
 
----
-config:
-  layout: elk
-  theme: mc
----
-graph TB
-    subgraph ClientLayer["Client Layer"]
-        LandingScreen["Landing Screen"]
-        ProfileCreation["Profile Creation"]
-        AiMatch["AI Match"]
-        OpportunityFeed["Opportunity Feed"]
-        Dashboard["Dashboard"]
-    end
+<img width="4214" height="8192" alt="Aleropath Connect User-2026-08-25-111602" src="https://github.com/user-attachments/assets/434f4282-c409-40be-870c-700dde97a89f" />
 
-    subgraph SharedCore["Shared Core Client Engine"]
-        CoreJS["aleropath-core.js"]
-        KarmaIndex["Karma Index"]
-        TeamWorkspace["Team Workspace"]
-        Assembler["Assembler"]
-        CoreJS --> KarmaIndex
-        CoreJS --> TeamWorkspace
-        CoreJS --> Assembler
-    end
-
-    subgraph FullStackServer["Full-Stack Express Server"]
-        ServerTS["server.ts"]
-        GeminiTag["/api/gemini/tag-opportunity"]
-        GeminiExplain["/api/gemini/explain-match"]
-        SeedData["/api/seed-data"]
-        ServerTS --> GeminiTag
-        ServerTS --> GeminiExplain
-        ServerTS --> SeedData
-    end
-
-    subgraph ExternalCloud["External Cloud & Edge Layer"]
-        GeminiAPI["Google Gemini 3.7 Flash AI API"]
-        NetlifyDeploy["Netlify Deployment"]
-    end
-
-    LandingScreen --> CoreJS
-    ProfileCreation --> CoreJS
-    AiMatch --> CoreJS
-    OpportunityFeed --> CoreJS
-    Dashboard --> CoreJS
-
-    CoreJS --> ServerTS
-    GeminiTag --> GeminiAPI
-    GeminiExplain --> GeminiAPI
-    SeedData --> GeminiAPI
-
-    ServerTS --> NetlifyDeploy
-    ClientLayer --> NetlifyDeploy
-
-    classDef client stroke:#3b82f6,fill:#eff6ff
-    classDef core stroke:#8b5cf6,fill:#faf5ff
-    classDef server stroke:#f97316,fill:#fff7ed
-    classDef external stroke:#06b6d4,fill:#ecfeff
-    classDef process stroke:#6366f1,fill:#eef2ff
-
-    class LandingScreen,ProfileCreation,AiMatch,OpportunityFeed,Dashboard client
-    class CoreJS,KarmaIndex,TeamWorkspace,Assembler core
-    class ServerTS,GeminiTag,GeminiExplain,SeedData server
-    class GeminiAPI,NetlifyDeploy external
 ---
 ---
 ## 🧮 Matching Engine Mathematical Specification
