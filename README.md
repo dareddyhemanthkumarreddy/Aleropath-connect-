@@ -10,10 +10,16 @@
   <img src="https://img.shields.io/badge/TailwindCSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
 </p>
 
+<p align="center">
+  <a href="https://aleropath-connect.netlify.app/" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Site-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" />
+  </a>
+</p>
+
 ### **AI-Powered Opportunity Graph, Explainable Teammate Matching & Real-Time Builder Workspace**
 *Transforming fragmented student community listings into an intelligent discovery, matching, and collaboration ecosystem across Indian builder hubs.*
 
-[Explore Features](#-core-capabilities) • [System Architecture](#-system-architecture) • [Matching Math](#-matching-engine-mathematical-specification) • [Organizer Portal](#-organizer-portal--analytics) • [Netlify Deployment](#-netlify-deployment-guide) • [Hackathon Pitch](#-2-minute-hackathon-judging-pitch)
+[Explore Features](#-core-capabilities) • [System Architecture](#-system-architecture) • [Matching Math](#-matching-engine-mathematical-specification) • [Organizer Portal](#-organizer-portal--an[...] 
 
 </div>
 
@@ -21,7 +27,7 @@
 
 ## 📖 Challenge Brief & Core Problem
 
-Student communities around technology, hackathons, open-source projects, and entrepreneurship are growing rapidly across India. However, opportunities and member interactions are fragmented across **WhatsApp groups, Instagram stories, Discord servers, Telegram channels, and spreadsheets**.
+Student communities around technology, hackathons, open-source projects, and entrepreneurship are growing rapidly across India. However, opportunities and member interactions are fragmented across **W[...]
 
 Because of this fragmentation:
 1. **Students miss high-value opportunities** and struggle to find matched project teammates or verified mentors.
@@ -29,7 +35,7 @@ Because of this fragmentation:
 3. **No central trust mechanism** exists to verify proof-of-work or builder reputation.
 
 ### 🎯 The Aleropath Solution
-**Aleropath Connect** transforms scattered unstructured text into a structured, unified opportunity graph using **Google Gemini 3.7/Flash AI** combined with a **multi-vector deterministic matching engine (60–99% Explainable AI)**, an interactive **Team Workspace**, and a dedicated **Community Organizer Portal**.
+**Aleropath Connect** transforms scattered unstructured text into a structured, unified opportunity graph using **Google Gemini 3.7/Flash AI** combined with a **multi-vector deterministic matching eng[...] 
 
 ```
   [Messy WhatsApp / Discord / Instagram Copy-Paste]
@@ -93,12 +99,44 @@ Because of this fragmentation:
 ---
 
 ## 🏗 System Architecture
-<img width="4678" height="4214" alt="Client Layer Opportunity-2026-08-25-111349" src="https://github.com/user-attachments/assets/a5dcbbed-050d-44e0-9269-2223616220d3" />
 
-<img width="4214" height="8192" alt="Aleropath Connect User-2026-08-25-111602" src="https://github.com/user-attachments/assets/434f4282-c409-40be-870c-700dde97a89f" />
+```mermaid
+flowchart TB
+    subgraph Client ["Client Layer (Tailwind v4 / HTML5 / Aleropath Core)"]
+        UI1["Landing Page & Persona Switcher\n(LandingScreen.html)"]
+        UI2["Profile Builder & Signal Collector\n(ProfileCreation.html)"]
+        UI3["AI Match Explorer & Team Assembler\n(AiMatch.html)"]
+        UI4["Opportunity Feed & Auto-Tagging\n(OpportunityFeed.html)"]
+        UI5["Builder & Organizer Command Portal\n(Dashboard.html)"]
+        CORE["Shared Engine & Workspaces\n(aleropath-core.js)"]
+        STORE[("Local Storage & Workspaces\n• Profiles • Matches • Chat")]
+    end
+
+    subgraph Server ["Backend & Production Build (Express + TypeScript + Vite)"]
+        ROUTER["Express Engine & Router\n(server.ts)"]
+        SEED[("Static Seed Graph\nseed_dataset_india_premium.json")]
+        HEALTH["Health Monitor\n/api/health"]
+    end
+
+    subgraph Cloud ["Cloud Intelligence & Deployment"]
+        GEMINI["Google Gemini 3.7 / Flash API\n(@google/genai)"]
+        NETLIFY["Netlify Free Tier Deployment\n(netlify.toml)"]
+    end
+
+    UI1 --> CORE
+    UI2 --> CORE
+    UI3 --> CORE
+    UI4 --> CORE
+    UI5 --> CORE
+    CORE <--> STORE
+    CORE <--> ROUTER
+    ROUTER <--> GEMINI
+    ROUTER <--> SEED
+    Client --> NETLIFY
+```
 
 ---
----
+
 ## 🧮 Matching Engine Mathematical Specification
 
 The Aleropath matching engine computes a deterministic compatibility score $S(P, O) \in [0.60, 0.99]$ between a Builder Profile $P$ and an Opportunity/Candidate Record $O$:
@@ -123,11 +161,11 @@ $$J(A, B) = \frac{|A \cap B|}{|A \cup B|}$$
 
 | View | Basename Link | Description |
 | :--- | :--- | :--- |
-| **Landing & Hub** | [`LandingScreen.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/LandingScreen.html) | Hero section, live personalized match previews, test persona switcher, feature highlights. |
-| **Profile Creation** | [`ProfileCreation.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/ProfileCreation.html) | 4-step wizard capturing builder skills, college details, goals, and availability preferences. |
+| **Landing & Hub** | [`LandingScreen.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/LandingScreen.html) | Hero section, live personalized match previews, test persona switcher, feature hi[...]
+| **Profile Creation** | [`ProfileCreation.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/ProfileCreation.html) | 4-step wizard capturing builder skills, college details, goals, and availa[...]
 | **AI Match Engine** | [`AiMatch.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/AiMatch.html) | Multi-category match feeds, Team Workspace Drawer, and Assemble Hackathon Team Wizard. |
-| **Opportunity Feed** | [`OpportunityFeed.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/OpportunityFeed.html) | Real-time community opportunity board with "AI Recommended For You" carousel and Gemini auto-tagging modal. |
-| **Builder & Organizer Portal** | [`Dashboard.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/Dashboard.html) | Dual-mode dashboard featuring Builder Analytics, Karma Index, and Community Organizer Management. |
+| **Opportunity Feed** | [`OpportunityFeed.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/OpportunityFeed.html) | Real-time community opportunity board with "AI Recommended For You" carous[...]
+| **Builder & Organizer Portal** | [`Dashboard.html`](file:///c:/PROJECTS/Hackathons/Community-Engine/MVP/Dashboard.html) | Dual-mode dashboard featuring Builder Analytics, Karma Index, and Community [...]
 
 ---
 
@@ -164,13 +202,13 @@ netlify deploy --prod --dir=dist
 
 ## 🎤 2-Minute Hackathon Judging Pitch
 
-> **"Hello judges! We created Aleropath Connect to solve the core problem of community fragmentation.**
+> **"Hello judges! We created Aleropath Connect to solve the core problem of community fragmentation."**
 >
 > **Right now, student opportunities are lost in noisy WhatsApp groups and Discord channels. Aleropath changes this in 3 steps:**
 >
 > 1. **Instant AI Auto-Tagging**: Anyone can paste a raw WhatsApp/Discord post into our Opportunity Feed. Google Gemini extracts required skills, tags, dates, and category in seconds.
 > 2. **Multi-Vector Matching**: Our engine computes a 60–99% explainable fit score for every builder based on skills, domain goals, and intent.
-> 3. **End-to-End Collaboration**: Unlike social networks where connections stall, clicking 'Connect' opens an instant **Team Workspace** with live chat, task checklists, and GitHub/Figma repos. Plus, our **Organizer Portal** gives community leads real-time analytics on member skills and event RSVPs.
+> 3. **End-to-End Collaboration**: Unlike social networks where connections stall, clicking 'Connect' opens an instant **Team Workspace** with live chat, task checklists, and GitHub/Figma repos. Plus,[...]
 >
 > **Aleropath Connect isn't just another community platform — it's the intelligence layer that helps communities discover, connect, and grow together."**
 
